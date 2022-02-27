@@ -20,18 +20,22 @@ class Note extends FlxSprite
 	public var mustPress:Bool = false;
 	public var finishedGenerating:Bool = false;
 	public var noteData:Int = 0;
+	public var noteStyle:String = "normal";
+	public var noteType:Int = 0;
 	public var canBeHit:Bool = false;
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
 	public var coolBot:Bool = false;
 	public var mania:Int = 0;
 	public var isAlive:Bool = true;
+	public var isAlt:Bool = false;
 	public var prevNote:Note;
 	public var LocalScrollSpeed:Float = 1;
 	public var resetAnim:Float = 0;
 
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
+
 
 	public var noteScore:Float = 1;
 
@@ -41,8 +45,6 @@ class Note extends FlxSprite
 	public static var GREEN_NOTE:Int = 2;
 	public static var BLUE_NOTE:Int = 1;
 	public static var RED_NOTE:Int = 3;
-
-	public static var joe:Int = 0;
 
 	private var notetolookfor = 0;
 
@@ -84,15 +86,25 @@ class Note extends FlxSprite
 		x += 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
-		this.strumTime = strumTime;
+		this.strumTime = strumTime + FlxG.save.data.offset;
 
 		if (this.strumTime < 0 )
 			this.strumTime = 0;
 
 		this.noteData = noteData;
 
+		switch (noteStyle)
+		{
+		    case "normal":
+			    noteType = 0;
+			case "phone":
+			    noteType = 1; //here you can see which one which and uses number (int) because yes
+			case "corn":
+			    noteType = 2; //CORNHUBHBUHBUBHBHBVHUYBUYBYHBYH
+		}
+
 		var daStage:String = PlayState.curStage;
-		if (((CharactersWith3D.contains(PlayState.SONG.player2) && !musthit) || ((CharactersWith3D.contains(PlayState.SONG.player1) || PlayState.characteroverride == "dave-angey" || PlayState.characteroverride == "bambi-3d" || PlayState.characteroverride == "bambi-unfair" || PlayState.characteroverride == "bambi-piss-3d" || PlayState.characteroverride == "bandu" ) && musthit)) || ((CharactersWith3D.contains(PlayState.SONG.player2) || CharactersWith3D.contains(PlayState.SONG.player1)) && ((this.strumTime / 50) % 20 > 10)))
+		if ((CharactersWith3D.contains(PlayState.SONG.player2) && !musthit) || ((CharactersWith3D.contains(PlayState.SONG.player1) && musthit)) || ((CharactersWith3D.contains(PlayState.SONG.player2) || CharactersWith3D.contains(PlayState.SONG.player1)) && (this.strumTime / 50) % 20 > 10))
 		{
 				frames = Paths.getSparrowAtlas('NOTE_assets_3D');
 
@@ -127,15 +139,39 @@ class Note extends FlxSprite
 				animation.addByPrefix('blackhold', 'black hold piece');
 				animation.addByPrefix('darkhold', 'dark hold piece');
 
+				if (noteStyle == "phone")
+				{
+				frames = Paths.getSparrowAtlas('NOTE_phone');
+				animation.addByPrefix('phonegreenScroll', 'green0');
+				animation.addByPrefix('phoneredScroll', 'red0');
+				animation.addByPrefix('phoneblueScroll', 'blue0');
+				animation.addByPrefix('phonepurpleScroll', 'purple0');
+
+				animation.addByPrefix('phonepurplehold', 'purple hold piece');
+				animation.addByPrefix('phonegreenhold', 'green hold piece');
+				animation.addByPrefix('phoneredhold', 'red hold piece');
+				animation.addByPrefix('phonebluehold', 'blue hold piece');
+
+				animation.addByPrefix('phonepurpleholdend', 'pruple end hold');
+				animation.addByPrefix('phonegreenholdend', 'green hold end');
+				animation.addByPrefix('phoneredholdend', 'red hold end');
+				animation.addByPrefix('phoneblueholdend', 'blue hold end');
+				}
+				if (noteStyle == "corn")
+				{
+				frames = Paths.getSparrowAtlas('NOTE_corn');
+				animation.addByPrefix('cornScroll', 'green0');
+
+				animation.addByPrefix('cornhold', 'green hold piece');
+
+				animation.addByPrefix('cornholdend', 'green hold end');
+				}
 				setGraphicSize(Std.int(width * noteScale));
 				updateHitbox();
 				antialiasing = true;
 		}
 		else
 		{
-			switch (daStage)
-			{
-				default:
 				frames = Paths.getSparrowAtlas('NOTE_assets');
 
 				animation.addByPrefix('greenScroll', 'green0');
@@ -169,17 +205,46 @@ class Note extends FlxSprite
 				animation.addByPrefix('blackhold', 'black hold piece');
 				animation.addByPrefix('darkhold', 'dark hold piece');
 
+				if (noteStyle == "phone")
+				{
+				frames = Paths.getSparrowAtlas('NOTE_phone');
+				animation.addByPrefix('phonegreenScroll', 'green0');
+				animation.addByPrefix('phoneredScroll', 'red0');
+				animation.addByPrefix('phoneblueScroll', 'blue0');
+				animation.addByPrefix('phonepurpleScroll', 'purple0');
+
+				animation.addByPrefix('phonepurplehold', 'purple hold piece');
+				animation.addByPrefix('phonegreenhold', 'green hold piece');
+				animation.addByPrefix('phoneredhold', 'red hold piece');
+				animation.addByPrefix('phonebluehold', 'blue hold piece');
+
+				animation.addByPrefix('phonepurpleholdend', 'pruple end hold');
+				animation.addByPrefix('phonegreenholdend', 'green hold end');
+				animation.addByPrefix('phoneredholdend', 'red hold end');
+				animation.addByPrefix('phoneblueholdend', 'blue hold end');
+				}
+				if (noteStyle == "corn")
+				{
+				frames = Paths.getSparrowAtlas('NOTE_corn');
+				animation.addByPrefix('cornScroll', 'green0');
+
+				animation.addByPrefix('cornhold', 'green hold piece');
+
+				animation.addByPrefix('cornholdend', 'green hold end');
+				}
 				setGraphicSize(Std.int(width * noteScale));
 				updateHitbox();
 				antialiasing = true;
-			}
 		}
+		noteStyle = this.noteStyle;
 		var frameN:Array<String> = ['purple', 'blue', 'green', 'red'];
 		if (mania == 1) frameN = ['purple', 'green', 'red', 'yellow', 'blue', 'dark'];
 		else if (mania == 2) frameN = ['purple', 'blue', 'green', 'red', 'white', 'yellow', 'violet', 'black', 'dark'];
 
 		x += swagWidth * noteData;
 		animation.play(frameN[noteData] + 'Scroll');
+		if (noteStyle == "phone") animation.play("phone" + (mania == 0 ? frameN[noteData] : (mania == 1 ? frameN[1] : frameN[2])) + 'Scroll');
+		if (noteStyle == "corn") animation.play("cornScroll");
 		notetolookfor = noteData;
 
 		switch (PlayState.SONG.song.toLowerCase())
@@ -214,6 +279,18 @@ class Note extends FlxSprite
 				{
 					var state:PlayState = cast(FlxG.state,PlayState);
 					InPlayState = true;
+					if (isAlt)
+					{
+					state.poopStrums.forEach(function(spr:FlxSprite)
+						{
+							if (spr.ID == notetolookfor)
+							{
+									x = spr.x;
+									angle = spr.angle;
+									MyStrum = spr;
+								}
+							});
+					}
 					if (musthit)
 					{
 						state.playerStrums.forEach(function(spr:FlxSprite)
@@ -240,6 +317,7 @@ class Note extends FlxSprite
 					}
 				}
 		}
+
 		/*if (PlayState.SONG.song.toLowerCase() == 'unfairness')
 		{
 			var rng:FlxRandom = new FlxRandom();
@@ -298,6 +376,7 @@ class Note extends FlxSprite
 			x -= width / 2;
 
 			animation.play(frameN[noteData] + 'holdend');
+			if (noteStyle == "corn") animation.play('cornholdend');
 
 			if (PlayState.curStage.startsWith('school'))
 				x += 30;
@@ -305,7 +384,7 @@ class Note extends FlxSprite
 			if (prevNote.isSustainNote)
 			{
 				prevNote.animation.play(frameN[prevNote.noteData] + 'hold');
-
+				if (noteStyle == "corn") prevNote.animation.play("cornhold");
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.8 * PlayState.SONG.speed;
 				prevNote.updateHitbox();
 				// prevNote.setGraphicSize();
@@ -313,11 +392,10 @@ class Note extends FlxSprite
 		}
 	}
 
-	public var isAlt:Bool = false;
-
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
 		
 		if (MyStrum != null && !isAlt)
 		{
@@ -353,6 +431,7 @@ class Note extends FlxSprite
 					}
 			}
 		}
+		
 		if (mustPress)
 		{
 			// The * 0.5 is so that it's easier to hit them too late, instead of too early
@@ -364,8 +443,10 @@ class Note extends FlxSprite
 
 			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit && isAlive)
 				tooLate = true;
-			if (strumTime <= Conductor.songPosition && PlayState.botplay)//lol bot go brr
+			if (strumTime <= Conductor.songPosition && PlayState.botplay && noteType != 1)//lol bot go brr
+				{
 				coolBot = true;
+				}
 		}
 		else
 		{
