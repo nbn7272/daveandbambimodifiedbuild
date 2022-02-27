@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Unfairness.png">
+	<SubTexture name="you fucked up0000" x="0" y="0" width="690" height="716"/>
+	<SubTexture name="you fucked up0001" x="694" y="0" width="690" height="716"/>
+	<SubTexture name="you fucked up0002" x="1388" y="0" width="690" height="716"/>
+	<SubTexture name="you fucked up0003" x="2082" y="0" width="690" height="716"/>
+</TextureAtlas>

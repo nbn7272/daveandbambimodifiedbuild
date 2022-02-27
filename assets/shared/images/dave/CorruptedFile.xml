@@ -1,0 +1,29 @@
+ï»¿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="dabe.png">
+	<!-- Created with Adobe Animate version 21.0.1.37179 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="DOWN0000" x="0" y="0" width="455" height="671" frameX="0" frameY="0" frameWidth="455" frameHeight="689"/>
+	<SubTexture name="DOWN0001" x="0" y="0" width="455" height="671" frameX="0" frameY="0" frameWidth="455" frameHeight="689"/>
+	<SubTexture name="DOWN0002" x="459" y="0" width="404" height="658" frameX="-9" frameY="-16" frameWidth="455" frameHeight="689"/>
+	<SubTexture name="DOWN0003" x="459" y="0" width="404" height="658" frameX="-9" frameY="-16" frameWidth="455" frameHeight="689"/>
+	<SubTexture name="DOWN0004" x="867" y="0" width="413" height="661" frameX="-3" frameY="-26" frameWidth="455" frameHeight="689"/>
+	<SubTexture name="DOWN0005" x="867" y="0" width="413" height="661" frameX="-3" frameY="-26" frameWidth="455" frameHeight="689"/>
+	<SubTexture name="DOWN0006" x="1284" y="0" width="413" height="673" frameX="-9" frameY="-16" frameWidth="455" frameHeight="689"/>
+	<SubTexture name="DOWN0007" x="1284" y="0" width="413" height="673" frameX="-9" frameY="-16" frameWidth="455" frameHeight="689"/>
+	<SubTexture name="IDLE0000" x="1701" y="0" width="407" height="706" frameX="-13" frameY="0" frameWidth="452" frameHeight="706"/>
+	<SubTexture name="IDLE0001" x="1701" y="0" width="407" height="706" frameX="-13" frameY="0" frameWidth="452" frameHeight="706"/>
+	<SubTexture name="IDLE0002" x="1701" y="0" width="407" height="706" frameX="-13" frameY="0" frameWidth="452" frameHeight="706"/>
+	<SubTexture name="IDLE0003" x="2112" y="0" ZYHÈˆZYÚHŽÈˆœ˜[YVH‹NHˆœ˜[YVOH‹LLÈˆœ˜[YUÚYHLˆˆœ˜[YRZYÚHÌˆ‹Ï‚‚OÝX•^\™H˜[YOH’QLˆHŒŒLLˆˆOHŒˆÚYHÈˆZYÚHŽÈˆœ˜[YVH‹NHˆœ˜[YVOH‹LLÈˆœ˜[YUÚYHLˆˆœ˜[YRZYÚHÌˆ‹Ï‚‚OÝX•^\™H˜[YOH’QLHˆHŒŒLLˆˆOHŒˆÚYHÈˆZYÚHŽÈˆœ˜[YVH‹NHˆœ˜[YVOH‹LLÈˆœ˜[YUÚYHLˆˆœ˜[YRZYÚHÌˆ‹Ï‚‚OÝX•^\™H˜[YOH’QLˆˆHŒMNHˆOHŒˆÚYHÌHˆZYÚHŽˆœ˜[YVHŒˆœ˜[YVOH‹LNˆœ˜[YUÚYHLˆˆœ˜[YRZYÚHÌˆ‹Ï‚‚OÝX•^\™H˜[YOH’QLÈˆHŒMNHˆOHŒˆÚYHÌHˆZYÚHŽˆœ˜[YVHŒˆœ˜[YVOH‹LNˆœ˜[YUÚYHLˆˆœ˜[YRZYÚHÌˆ‹Ï‚‚OÝX•^\™H˜[YOH’QLˆHŒMNHˆOHŒˆÚYHÌHˆZYÚHŽˆœ˜[YVHŒˆœ˜[YVOH‹LNˆœ˜[YUÚYHLˆˆœ˜[YRZYÚHÌˆ‹Ï‚‚OÝX•^\™H˜[YOH’QLHˆHŒŽNMˆOHŒˆÚYHÍˆZYÚHŽÈˆœ˜[YVH‹LLˆˆœ˜[YVOH‹LLHˆœ˜[YUÚYHLˆˆœ˜[YRZYÚHÌˆ‹Ï‚‚OÝX•^\™H˜[YOH’QLLˆHŒŽNMˆOHŒˆÚYHÍˆZYÚHŽÈˆœ˜[YVH‹LLˆˆœ˜[YVOH‹LLHˆœ˜[YUÚYHLˆˆœ˜[YRZYÚHÌˆ‹Ï‚‚OÝX•^\™H˜[YOH’QLLHˆHŒŽNMˆOHŒˆÚYHÍˆZYÚHŽÈˆœ˜[YVH‹LLˆˆœ˜[YVOH‹LLHˆœ˜[YUÚYHLˆˆœ˜[YRZYÚHÌˆ‹Ï‚‚OÝX•^\™H˜[YOH“Q•ˆHŒÍÌˆˆOHŒˆÚYHŒˆˆZYÚHÍÈˆœ˜[YVH‹LŒÈˆœ˜[YVOH‹LNˆœ˜[YUÚYHLŒˆˆœ˜[YRZYÚHŽN‹Ï‚‚OÝX•^\™H˜[YOH“Q•HˆHŒÍÌˆˆOHŒˆÚYHŒˆˆZYÚHÍÈˆœ˜[YVH‹LŒÈˆœ˜[YVOH‹LNˆœ˜[YUÚYHLŒˆˆœ˜[YRZYÚHŽN‹Ï‚‚OÝX•^\™H˜[YOH“Q•ˆˆHŒˆOHÌLˆÚYHLHˆZYÚHŽHˆœ˜[YVH‹LLˆˆœ˜[YVOH‹Mˆˆœ˜[YUÚYHLŒˆˆœ˜[YRZYÚHŽN‹Ï‚‚OÝX•^\™H˜[YOH“Q•ÈˆHŒˆOHÌLˆÚYHLHˆZYÚHŽHˆœ˜[YVH‹LLˆˆœ˜[YVOH‹Mˆˆœ˜[YUÚYHLŒˆˆœ˜[YRZYÚHŽN‹Ï‚‚OÝX•^\™H˜[YOH“Q•ˆHLHˆOHÌLˆÚYHLÈˆZYÚHHˆœ˜[YVHŒˆœ˜[YVOHŒˆœ˜[YUÚYHLŒˆˆœ˜[YRZYÚHŽN‹Ï‚‚OÝX•^\™H˜[YOH“Q•HˆHLHˆOHÌLˆÚYHLÈˆZYÚHHˆœ˜[YVHŒˆœ˜[YVOHŒˆœ˜[YUÚYHLŒˆˆœ˜[YRZYÚHŽN‹Ï‚‚OÝX•^\™H˜[YOH“Q•ˆˆHŒLˆˆOHÌLˆÚYHLLˆZYÚHŽLˆˆœ˜[YVH‹LLˆˆœ˜[YVOH‹Mˆˆœ˜[YUÚYHLŒˆˆœ˜[YRZYÚHŽN‹Ï‚‚OÝX•^\™H˜[YOH“Q•ÈˆHŒLˆˆOHÌLˆÚYHLLˆZYÚHŽLˆˆœ˜[YVH‹LLˆˆœ˜[YVOH‹Mˆˆœ˜[YUÚYHLŒˆˆœ˜[YRZYÚHŽN‹Ï‚‚OÝX•^\™H˜[YOH”’QÒˆHŒMLŒˆOHÌLˆÚYHÍˆZYÚHÌMˆˆœ˜[YVH‹LÈˆœ˜[YVOH‹LMÈˆœ˜[YUÚYHÎHˆœ˜[YRZYÚHÌÌÈ‹Ï‚‚OÝX•^\™H˜[YOH”’QÒHˆHŒMLŒˆOHÌLˆÚYHÍˆZYÚHÌMˆˆœ˜[YVH‹LÈˆœ˜[YVOH‹LMÈˆœ˜[YUÚYHÎHˆœ˜[YRZYÚHÌÌÈ‹Ï‚‚OÝX•^\™H˜[YOH”’QÒˆˆHŒNMNˆOHÌLˆÚYHˆZYÚHÌLˆœ˜[YVH‹LMHˆœ˜[YVOH‹LNˆœ˜[YUÚYHÎHˆœ˜[YRZYÚHÌÌÈ‹Ï‚‚OÝX•^\™H˜[YOH”’QÒÈˆHŒNMOx" y="710" width="424" height="710" frameX="-15" frameY="-18" frameWidth="479" frameHeight="733"/>
+	<SubTexture name="RIGHT0004" x="2386" y="710" width="479" height="730" frameX="0" frameY="0" frameWidth="479" frameHeight="733"/>
+	<SubTexture name="RIGyT0005" x="2386" y="710" width="479" height="730" frameX="0" frameY="0" frameWidth="479" frameHeight="733"/>
+	<SubTexture name="RIGHT0006" x="1958" y="710" width="424" height="710" frameX="-20" frameY="-13" frameWidth="479" frameHeight="733"/>
+	<SubTexture name="RIGHT0007" x="1958" y="710" width="424" height="710" frameX="-20" frameY="-13" frameWidth="479" frameHeight="733"/>
+	<SubTexture name="UP0000" x="2869" y="710" width="402" height="708" frameX="0" frameY="-18" frameWidth="402" frameHeight="726"/>
+	<SubTexture name="UP0001" x="2869" y="710" width="402" height="708" frameX="0" frameY="-18" frameWidth="402" frameHeight="726"/>
+	<SubTexture name="UP0002" x="3275" y="710" width="348" height="716" frameX="-25" frameY="-5" frameWidth="402" frameHeight="726"/>
+	<SubTexture name="UP0003" x="3275" y="710" width="348" height="716" frameX="-25" frameY="-5" frameWidth="402" frameHeight="726"/>
+	<SubTexture name="UP0004" x="3627" y="710" width="342" height="692" frameX="-9" frameY="-1" frameWidth="402" frameHeight="726"/>
+	<SubTexture name="UP0005" x="3627" y="710" width="342" height="692" frameX="-9" frameY="-1" frameWidth="402" frameHeight="726"/>
+	<SubTexture name="UP0006" x="3275" y="710" width="348" height="716" frameX="-19" frameY="0" frameWidth="402" frameHeight="726"/>
+	<SubTexture name="UP0007" x="3275" y="710" width="348" height="716" frameX="-19" frameY="0" frameWidth="402" frameHeight="726"/>
+</TextureAtlas>
