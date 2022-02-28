@@ -9,7 +9,7 @@ class DiscordClient
 	public function new()
 	{
 		DiscordRpc.start({
-			clientID: "879181607666327553",
+			clientID: "947580647747227718", //DAVE AND CHAMPU WTF
 			onReady: onReady,
 			onError: onError,
 			onDisconnected: onDisconnected

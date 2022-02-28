@@ -58,7 +58,7 @@ class ChartingState extends MusicBeatState
 	var bullshitUI:FlxGroup;
 
 	var noteType:Int = 0;
-	var styles:Array<String> = ['normal', 'phone'];
+	var styles:Array<String> = ['normal', 'phone', 'corn'];
 
 	var noteTypeText:FlxText = new FlxText(-200, 0, 0,'Charting: Note', 16);
 
@@ -71,6 +71,7 @@ class ChartingState extends MusicBeatState
 
 	var curRenderedNotes:FlxTypedGroup<Note>;
 	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
+	var curRenderedTypes:FlxTypedGroup<FlxSprite>;
 
 	var gridBG:FlxSprite;
 
@@ -109,6 +110,7 @@ class ChartingState extends MusicBeatState
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
+		curRenderedTypes = new FlxTypedGroup<FlxSprite>();
 
 		if (PlayState.SONG != null)
 			_song = PlayState.SONG;
@@ -146,7 +148,7 @@ class ChartingState extends MusicBeatState
 
 
 		FlxG.mouse.visible = true;
-		//FlxG.save.bind('funkin', 'ninjamuffin99'); //ig
+		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		tempBpm = _song.bpm;
 
@@ -189,6 +191,7 @@ class ChartingState extends MusicBeatState
 
 		add(curRenderedNotes);
 		add(curRenderedSustains);
+		add(curRenderedTypes);
 
 		super.create();
 	}
@@ -231,13 +234,7 @@ class ChartingState extends MusicBeatState
 
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
 		{
-			/*if (_song.song.toLowerCase() == 'screwed') {
-				PlayState.SONG = Song.loadFromJson("disruption", "disruption"); // you dun deez'd up
-				FlxG.save.data.deezFound = true; //POV: you forgot to put deez in disruption https://cdn.discordapp.com/attachments/935525702822944781/947185282971762728/unknown.png
-				FlxG.switchState(new PlayState());
-			}
-			else*/
-				loadJson(_song.song.toLowerCase());
+			loadJson(_song.song.toLowerCase());
 		});
 
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
@@ -261,7 +258,7 @@ class ChartingState extends MusicBeatState
 			shiftNotes(Std.int(stepperShiftNoteDial.value),Std.int(stepperShiftNoteDialstep.value),Std.int(stepperShiftNoteDialms.value));
 		});
 
-		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 65, 0.1, 1, 0.1, 10000, 0);
+		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 65, 0.1, 1, 0.1, 10000, 1);
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 
@@ -571,15 +568,15 @@ class ChartingState extends MusicBeatState
 			gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * _song.notes[curSection].lengthInSteps);
 			add(gridBG);
 		}
-		if (FlxG.keys.justPressed.FOUR)
+		if (FlxG.keys.justPressed.FOUR && FlxG.keys.pressed.ALT)
 		{
 			_song.mania = 0;
 		}
-		if (FlxG.keys.justPressed.SIX)
+		if (FlxG.keys.justPressed.SIX && FlxG.keys.pressed.ALT)//mania boxes bad. and the need to press alt allows you to input the numbers without changing mania
 		{
 			_song.mania = 1;
 		}
-		if (FlxG.keys.justPressed.NINE)
+		if (FlxG.keys.justPressed.NINE && FlxG.keys.pressed.ALT)
 		{
 			_song.mania = 2;
 		}
@@ -727,19 +724,30 @@ class ChartingState extends MusicBeatState
 			}
 			if(FlxG.keys.justPressed.Z)
 			{
-				this.noteType--;
-				if(noteType < 0)
+			    trace('changing style');
+				this.noteType = 0;
+				/*if(noteType < 0)
 				{
 					noteType = styles.length - 1;
-				}
+				}*/
+				trace(noteType);
 			}
 			if(FlxG.keys.justPressed.X)
 				{
-					this.noteType++;
+				    trace('changing style');
+					this.noteType = 1;
+					/*this.noteType++;
 					if(noteType == styles.length)
 					{
 						noteType = 0;
-					}
+					}*/
+					trace(noteType);
+				}
+			if(FlxG.keys.justPressed.C)
+				{
+				    trace('changing style');
+					this.noteType = 2;
+					trace(noteType);
 				}
 
 			if (FlxG.keys.justPressed.R)
@@ -1002,6 +1010,11 @@ class ChartingState extends MusicBeatState
 			curRenderedSustains.remove(curRenderedSustains.members[0], true);
 		}
 
+		while (curRenderedTypes.members.length > 0)
+			{
+				curRenderedTypes.remove(curRenderedTypes.members[0], true);
+			}
+
 		var sectionInfo:Array<Dynamic> = _song.notes[curSection].sectionNotes;
 
 		if (_song.notes[curSection].changeBPM && _song.notes[curSection].bpm > 0)
@@ -1032,28 +1045,38 @@ class ChartingState extends MusicBeatState
 				}
 			}
 		 */
-
+		
 		for (i in sectionInfo)
 		{
 			var daNoteInfo = i[1];
 			var daStrumTime = i[0];
 			var daSus = i[2];
-			var daStyle = i[3];
-
-			
-
-			var note:Note = new Note(daStrumTime, daNoteInfo % keyAmmo[_song.mania], null, false);
+			var daType = i[3];
+			var note:Note = new Note(daStrumTime, daNoteInfo % (keyAmmo[_song.mania]));
 			note.sustainLength = daSus;
+			note.noteType = daType;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 			note.updateHitbox();
+
+			//note.updateHitbox();note.burning = daNoteInfo > 7;
+				
+			
 			note.x = Math.floor(daNoteInfo * GRID_SIZE);
 			note.y = Math.floor(getYfromStrum((daStrumTime - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps)));
 
-			if (_song.mania == 2)
+			if (_song.mania == 2 || _song.mania == 5)
 			{
 				note.setGraphicSize(S_GRID_SIZE, GRID_SIZE);
 				note.x = Math.floor(daNoteInfo * S_GRID_SIZE);
 			}
+
+			if (note.noteStyle != "normal")
+				{
+					var thetext:String = Std.string(daType);
+					var typeText:FlxText = new FlxText(note.x, note.y, 0, thetext, 25, true);
+					typeText.color = FlxColor.fromRGB(255,0,0);
+					curRenderedTypes.add(typeText);
+				}
 
 			curRenderedNotes.add(note);
 
@@ -1206,6 +1229,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteStyle]);
+		trace(noteStyle);
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 

@@ -37,5 +37,7 @@ class SaveDataHandler
 		
 		if (FlxG.save.data.newInput == null && FlxG.save.data.lastversion == null)
 			FlxG.save.data.lastversion = "beta2";
+		if (FlxG.save.data.immortal == null)
+			FlxG.save.data.immortal = false;
     }
 }

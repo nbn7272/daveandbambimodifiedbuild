@@ -114,7 +114,7 @@ class FreeplayState extends MusicBeatState
 			case 'extra':
 				addWeek(['Mealie'], 2, ['bambi-loser']);
 				addWeek(['Furiosity', 'Old-Insanity'], 1, ['dave-angey', 'dave-old']);
-				addWeek(['Old-Corn-Theft', 'Old-Maze', 'Disruption', 'Applecore'], 2, ['bambi-farmer-beta', 'bambi-farmer-beta', 'bambi-piss-3d', 'bandu']);
+				addWeek(['Old-Corn-Theft', 'Old-Maze', 'Disruption', 'Applecore', 'Very-Screwed'], 2, ['bambi-farmer-beta', 'bambi-farmer-beta', 'bambi-piss-3d', 'bandu', 'bambi-angey']);
 				if(FlxG.save.data.phonoFound)
 					addWeek(['Phonophobia'], 2, ['bambi-phono']);
 		}

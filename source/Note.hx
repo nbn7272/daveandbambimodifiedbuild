@@ -106,8 +106,7 @@ class Note extends FlxSprite
 		var daStage:String = PlayState.curStage;
 		if ((CharactersWith3D.contains(PlayState.SONG.player2) && !musthit) || ((CharactersWith3D.contains(PlayState.SONG.player1) && musthit)) || ((CharactersWith3D.contains(PlayState.SONG.player2) || CharactersWith3D.contains(PlayState.SONG.player1)) && (this.strumTime / 50) % 20 > 10))
 		{
-				frames = Paths.getSparrowAtlas('NOTE_assets_3D');
-
+				frames = Paths.getSparrowAtlas('NOTE_assets_3D');		
 				animation.addByPrefix('greenScroll', 'green0');
 				animation.addByPrefix('redScroll', 'red0');
 				animation.addByPrefix('blueScroll', 'blue0');

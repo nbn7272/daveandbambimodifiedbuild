@@ -118,7 +118,7 @@ class PlayState extends MusicBeatState
 	var funnyFloatyBoys2:Array<String> = ['dave-corrupt', 'dave-corrupt-2', 'dave-corrupt-3', 'dave-corrupt-4', 'dave-corrupt-5', 'dave-corrupt-6', 'dave-corrupt-7'];
 	var funnyFloatyAppleCore:Array<String> = ['bandu', 'bambi-piss-3d', 'unfair-junker']; //junk 1
 
-	var elpepe:Array<String> = ['dave-angey', 'bambi-3d', 'dave-annoyed-3d', 'dave-3d-standing-bruh-what', 'bambi-unfair', 'bambi-helium', 'unfair-helium', 'SEAL', 'bambi-phono', 'hell', 'OPPOSITION', 'thearchy', 'GREEN', 'bandu', 'bambi-piss-3d', 'unfair-junker']; //junk 1
+	var elpepe:Array<String> = ['dave-angey', 'bambi-3d', 'dave-annoyed-3d', 'dave-3d-standing-bruh-what', 'bambi-unfair', 'bambi-helium', 'unfair-helium', 'SEAL', 'bambi-phono', 'hell', 'OPPOSITION', 'thearchy', 'GREEN', 'bandu', 'bambi-piss-3d', 'unfair-junker', 'bambi-angey']; //junk 1
 	
 	var hypertone:Array<String> = ['opposition', 'phonophobia', 'hellbreaker'];//lol
 	var cheese:String;
@@ -926,12 +926,12 @@ class PlayState extends MusicBeatState
 					bg.shader = testshader.shader;
 					curbg = bg;
 				}
-			case 'blocked' | 'corn-theft' | 'maze' | 'old-corn-theft' | 'old-maze' | 'mealie' | 'splitathon':
+			case 'blocked' | 'corn-theft' | 'maze' | 'old-corn-theft' | 'old-maze' | 'mealie' | 'very-screwed' | 'splitathon':
 				defaultCamZoom = 0.9;
 
 				switch (SONG.song.toLowerCase())
 				{
-					case 'splitathon' | 'mealie':
+					case 'splitathon' | 'mealie' | 'very-screwed':
 						curStage = 'bambiFarmNight';
 					case 'maze' | 'old-maze':
 						curStage = 'bambiFarmSunset';
@@ -1658,9 +1658,15 @@ class PlayState extends MusicBeatState
 			// FlxG.log.add(i);
 			var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i);
 
-			if (Note.CharactersWith3D.contains(dad.curCharacter) && player == 0 || dad.curCharacter == 'scopomania' && player == 0 || Note.CharactersWith3D.contains(boyfriend.curCharacter) && player == 1)
+			if (elpepe.contains(dad.curCharacter) && player == 0 || dad.curCharacter == 'scopomania' && player == 0 || elpepe.contains(boyfriend.curCharacter) && player == 1)
 			{
-				babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets_3D');
+					switch (dad.curCharacter)
+					{
+						case 'bambi-angey': //idc
+							babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets_JUNK');
+						default:
+							babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets_3D');
+					}
 					babyArrow.animation.addByPrefix('green', 'arrowUP');
 					babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
 					babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
@@ -2997,17 +3003,32 @@ class PlayState extends MusicBeatState
 					}
 
 					switch (SONG.song.toLowerCase())
-					{
-						case 'disruption':
-							health -= healthtolower / 2.65;
-						case 'applecore':
-							if (unfairPart) health -= (healthtolower / 12);
-						case 'cheating' | 'cheating-high-pitched':
-							health -= healthtolower;
-						case 'hellbreaker':
-							if (health > healthtolower) health -= healthtolower;
-						case 'unfairness' | 'unfairness-high-pitched' | 'torture':
-							health -= (healthtolower / 1.75);
+					{					
+							case 'disruption':
+								if (FlxG.save.data.immortal)
+									health += 0;
+								else
+									health -= healthtolower / 2;
+							case 'applecore':
+								if (FlxG.save.data.immortal)
+									health += 0;
+								else
+									if (unfairPart) health -= (healthtolower / 12);
+							case 'cheating' | 'cheating-high-pitched':
+								if (FlxG.save.data.immortal)
+									health += 0;
+								else
+									health -= healthtolower;
+							case 'hellbreaker':
+								if (FlxG.save.data.immortal)
+									health += 0;
+								else
+									if (health > healthtolower) health -= healthtolower;
+							case 'unfairness' | 'unfairness-high-pitched' | 'torture':
+								if (FlxG.save.data.immortal)
+									health += 0;
+								else
+									health -= (healthtolower / 1.75);
 					}
 					// boyfriend.playAnim('hit',true);
 					dad.holdTimer = 0;
@@ -3103,11 +3124,25 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
-						if(daNote.mustPress && daNote.finishedGenerating)
+						if(daNote.mustPress && daNote.finishedGenerating && daNote.noteType != 1)
 						{
-							noteMiss(daNote.noteData);
-							health -= 0.075;
-							vocals.volume = 0;
+						    if (daNote.noteType == 2)
+							{
+								if(FlxG.save.data.immortal)
+									health += 0;
+								else
+									health = -1;
+							}
+							if(FlxG.save.data.immortal)
+							{
+								health += 0;
+							}
+							else
+							{
+								noteMiss(daNote.noteData);
+								health -= 0.075;
+								vocals.volume = 0;
+							}		
 						}
 						else if(daNote.mustPress && daNote.finishedGenerating)
 						{
@@ -3174,7 +3209,10 @@ class PlayState extends MusicBeatState
 						FlxG.camera.shake(0.0075, 0.1);
 						camHUD.shake(0.0045, 0.1);
 
-						health -=  0.013 / 2.65;
+						if(FlxG.save.data.immortal)
+							health +=  0;
+						else
+							health -=  0.013 / 2.65;
 
 						var time:Float = 0.15;
 						if(daNote.isSustainNote && !daNote.animation.curAnim.name.endsWith('end')) {
@@ -3215,7 +3253,7 @@ class PlayState extends MusicBeatState
 			}
 		notes.forEach(function(daNote:Note)
 			{
-			if (SONG.notes[Math.floor(curStep / 16)] != null && !SONG.notes[Math.floor(curStep / 16)].altAnim)
+			if (SONG.notes[Math.floor(curStep / 16)] != null && !SONG.notes[Math.floor(curStep / 16)].altAnim && SONG.song.toLowerCase() != "disruption")
 			{
 			daNote.scale.set(Note.scales[mania], Note.scales[mania] * (daNote.isSustainNote ? 4 : 1));
 			}
@@ -4365,7 +4403,11 @@ class PlayState extends MusicBeatState
 	{
 		if (!boyfriend.stunned)
 		{
-			health -= 0.04;
+			if(FlxG.save.data.immortal)
+				health += 0;
+			else
+				health -= 0.04;
+
 			if (combo > 5 && gf.animOffsets.exists('sad'))
 			{
 				gf.playAnim('sad');
@@ -4425,7 +4467,7 @@ class PlayState extends MusicBeatState
 		// REDO THIS SYSTEM!
 		if (note != null)
 		{
-			if(note.mustPress && note.finishedGenerating)
+			if(note.mustPress && note.finishedGenerating && note.noteType != 1)
 			{
 				noteMiss(note.noteData);
 			}
@@ -4554,6 +4596,14 @@ class PlayState extends MusicBeatState
 			note.destroy();
 
 			updateAccuracy();
+		}
+		else if (!note.wasGoodHit && note.noteType == 1)
+		{
+		noteMiss(note.noteData);
+		note.kill();
+		notes.remove(note, true);
+		note.destroy();
+		updateAccuracy();
 		}
 	}
 
