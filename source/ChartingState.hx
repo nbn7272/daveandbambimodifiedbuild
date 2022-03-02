@@ -934,7 +934,10 @@ class ChartingState extends MusicBeatState
 		{
 			var strum = note[0] + Conductor.stepCrochet * (_song.notes[daSec].lengthInSteps * sectionNum);
 
-			var copiedNote:Array<Dynamic> = [strum, note[1], note[2]];
+			var copiedNote:Array<Dynamic> = [strum, note[1], note[2], note[3]];
+				if(note[1] < 0) {
+					copiedNote = [strum, note[1], note[2], note[3], note[4]];
+				}
 			_song.notes[daSec].sectionNotes.push(copiedNote);
 		}
 
@@ -1054,7 +1057,8 @@ class ChartingState extends MusicBeatState
 			var daType = i[3];
 			var note:Note = new Note(daStrumTime, daNoteInfo % (keyAmmo[_song.mania]));
 			note.sustainLength = daSus;
-			note.noteType = daType;
+			note.noteStyle = daType;//FINALLY I GOT IT TO SHOW NOTE TYPES
+			note.noteType = daType == "normal" ? 0 : (daType == "phone" ? 1 : 2);
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 			note.updateHitbox();
 
@@ -1070,13 +1074,13 @@ class ChartingState extends MusicBeatState
 				note.x = Math.floor(daNoteInfo * S_GRID_SIZE);
 			}
 
-			if (note.noteStyle != "normal")
+			/*if (note.noteStyle != "normal")
 				{
 					var thetext:String = Std.string(daType);
 					var typeText:FlxText = new FlxText(note.x, note.y, 0, thetext, 25, true);
 					typeText.color = FlxColor.fromRGB(255,0,0);
 					curRenderedTypes.add(typeText);
-				}
+				}*/
 
 			curRenderedNotes.add(note);
 
@@ -1235,7 +1239,7 @@ class ChartingState extends MusicBeatState
 
 		if (FlxG.keys.pressed.CONTROL)
 		{
-			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus]);
+			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + keyAmmo[_song.mania]) % keyAmmo[_song.mania], noteSus, noteStyle]);
 		}
 
 		trace(noteStrum);

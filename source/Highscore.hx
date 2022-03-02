@@ -89,8 +89,10 @@ class Highscore
 			daSong += '-easy';
 		else if (diff == 2)
 			daSong += '-hard';
-		else if (diff == 3)
+		else if (diff == 3 && song != "very-screwed")
 			daSong += '-unnerf';
+		else if (diff == 3 && song == "very-screwed")
+			daSong += '-extreme';
 
 		return daSong;
 	}

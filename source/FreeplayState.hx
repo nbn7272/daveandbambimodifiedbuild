@@ -41,7 +41,9 @@ class FreeplayState extends MusicBeatState
 
 	private var CurrentSongIcon:FlxSprite;
 
-	private var AllPossibleSongs:Array<String> = ["Dave", "Joke", "Extra", 'Base'];
+	private var AllPossibleSongs:Array<String> = ["Dave", "Joke", "Extra", 'Base', 'Extended'];
+
+	var moreDifficultySongs:Array<String> = ["House", "Insanity", "Polygonized", "Bonus-Song", "Furiosity", "Very-Screwed"]; //SEXERT
 
 	private var CurrentPack:Int = 0;
 
@@ -114,9 +116,11 @@ class FreeplayState extends MusicBeatState
 			case 'extra':
 				addWeek(['Mealie'], 2, ['bambi-loser']);
 				addWeek(['Furiosity', 'Old-Insanity'], 1, ['dave-angey', 'dave-old']);
-				addWeek(['Old-Corn-Theft', 'Old-Maze', 'Disruption', 'Applecore', 'Very-Screwed'], 2, ['bambi-farmer-beta', 'bambi-farmer-beta', 'bambi-piss-3d', 'bandu', 'bambi-angey']);
-				if(FlxG.save.data.phonoFound)
-					addWeek(['Phonophobia'], 2, ['bambi-phono']);
+				addWeek(['Old-Corn-Theft', 'Old-Maze'], 2, ['bambi-farmer-beta', 'bambi-farmer-beta']);
+				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia'], 2, ['face']);
+			case 'extended':
+				addWeek(['Disruption', 'Applecore', 'Very-Screwed'], 2, ['bambi-piss-3d', 'bandu', 'bambi-angey']);
+				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia', 'Torture'], 2, ['face']);
 		}
 	}
 
@@ -141,7 +145,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
-		scoreText.setFormat(Paths.font("comic.ttf"), 32, FlxColor.WHITE, RIGHT);
+		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 
 		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
 		scoreBG.alpha = 0.6;
@@ -293,7 +297,7 @@ class FreeplayState extends MusicBeatState
 	function changeDiff(change:Int = 0)
 	{
 		curDifficulty += change;
-		if (songs[curSelected].week != 1 || songs[curSelected].songName == 'Old-Insanity')
+		if (!moreDifficultySongs.contains(songs[curSelected].songName))// add your song name to the string titled "moreDifficultySongs" and the engine will add unnerfed difficulty for you!
 		{
 		if (curDifficulty < 0)
 			curDifficulty = 2;
@@ -335,12 +339,24 @@ class FreeplayState extends MusicBeatState
 				{
 					case 0:
 						diffText.text = "EASY" + " - " + stupidBitch.toUpperCase();
+						diffText.color = FlxColor.WHITE;
 					case 1:
 						diffText.text = 'NORMAL' + " - " + stupidBitch.toUpperCase();
+						diffText.color = FlxColor.WHITE;
 					case 2:
 						diffText.text = "HARD" + " - " + stupidBitch.toUpperCase();
+						diffText.color = FlxColor.WHITE;
 					case 3:
+					    if (songs[curSelected].songName == 'Very-Screwed')
+						{
+						diffText.text = "EXTREME" + " - " + stupidBitch.toUpperCase();
+						diffText.color = 0x00DF0101;
+						}
+						else
+						{
 						diffText.text = "LEGACY" + " - " + stupidBitch.toUpperCase();
+						diffText.color = FlxColor.WHITE;
+						}
 				}
 		}
 	}

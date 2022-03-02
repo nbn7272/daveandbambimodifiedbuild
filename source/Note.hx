@@ -100,13 +100,14 @@ class Note extends FlxSprite
 			case "phone":
 			    noteType = 1; //here you can see which one which and uses number (int) because yes
 			case "corn":
-			    noteType = 2; //CORNHUBHBUHBUBHBHBVHUYBUYBYHBYH
+			    noteType = 2;
 		}
 
 		var daStage:String = PlayState.curStage;
 		if ((CharactersWith3D.contains(PlayState.SONG.player2) && !musthit) || ((CharactersWith3D.contains(PlayState.SONG.player1) && musthit)) || ((CharactersWith3D.contains(PlayState.SONG.player2) || CharactersWith3D.contains(PlayState.SONG.player1)) && (this.strumTime / 50) % 20 > 10))
 		{
-				frames = Paths.getSparrowAtlas('NOTE_assets_3D');		
+				frames = Paths.getSparrowAtlas('NOTE_assets_3D');
+
 				animation.addByPrefix('greenScroll', 'green0');
 				animation.addByPrefix('redScroll', 'red0');
 				animation.addByPrefix('blueScroll', 'blue0');
@@ -138,7 +139,10 @@ class Note extends FlxSprite
 				animation.addByPrefix('blackhold', 'black hold piece');
 				animation.addByPrefix('darkhold', 'dark hold piece');
 
-				if (noteStyle == "phone")
+				animation.addByPrefix('phone', 'phone');
+				animation.addByPrefix('corn', 'corn');
+
+				if (noteStyle == "phone" || noteType == 1)
 				{
 				frames = Paths.getSparrowAtlas('NOTE_phone');
 				animation.addByPrefix('phonegreenScroll', 'green0');
@@ -156,7 +160,7 @@ class Note extends FlxSprite
 				animation.addByPrefix('phoneredholdend', 'red hold end');
 				animation.addByPrefix('phoneblueholdend', 'blue hold end');
 				}
-				if (noteStyle == "corn")
+				if (noteStyle == "corn" || noteType == 2)
 				{
 				frames = Paths.getSparrowAtlas('NOTE_corn');
 				animation.addByPrefix('cornScroll', 'green0');
@@ -204,7 +208,10 @@ class Note extends FlxSprite
 				animation.addByPrefix('blackhold', 'black hold piece');
 				animation.addByPrefix('darkhold', 'dark hold piece');
 
-				if (noteStyle == "phone")
+				animation.addByPrefix('phone', 'phone');
+				animation.addByPrefix('corn', 'corn');
+
+				if (noteStyle == "phone" || noteType == 1)
 				{
 				frames = Paths.getSparrowAtlas('NOTE_phone');
 				animation.addByPrefix('phonegreenScroll', 'green0');
@@ -222,7 +229,7 @@ class Note extends FlxSprite
 				animation.addByPrefix('phoneredholdend', 'red hold end');
 				animation.addByPrefix('phoneblueholdend', 'blue hold end');
 				}
-				if (noteStyle == "corn")
+				if (noteStyle == "corn" || noteType == 2)
 				{
 				frames = Paths.getSparrowAtlas('NOTE_corn');
 				animation.addByPrefix('cornScroll', 'green0');
@@ -394,7 +401,8 @@ class Note extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
+		if (noteStyle == "phone" && !isSustainNote) animation.play("phone");
+		if (noteStyle == "corn" && !isSustainNote) animation.play("corn");
 		
 		if (MyStrum != null && !isAlt)
 		{
@@ -428,6 +436,18 @@ class Note extends FlxSprite
 								}
 							});
 					}
+			}
+			else if (InPlayState && isAlt)
+			{
+			    var state:PlayState = cast(FlxG.state,PlayState);
+				state.poopStrums.forEach(function(spr:FlxSprite)
+				{
+					if (spr.ID == notetolookfor)
+					{
+						x = spr.x;
+						MyStrum = spr;
+					}
+				});
 			}
 		}
 		
