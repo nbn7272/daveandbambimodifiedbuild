@@ -55,7 +55,22 @@ class CreditsMenuState extends MusicBeatState
    var peopleInCredits:Array<Person> = 
    [
       //devs
-     new Person("MoldyGH", CreditsType.Dev, "Director, Creator, Programmer, Musician, Main Developer",
+      new Person("Grantare", CreditsType.Dev, "Disruption and Applecore Composer",
+        [
+           new Social('youtube', 'https://www.youtube.com/c/Grantare')
+         ]
+      ),
+      new Person("Maevings", CreditsType.Dev, "Opposition, Thearchy and Green Composer",
+        [
+           new Social('youtube', 'https://www.youtube.com/c/Maevings')
+         ]
+      ),
+      new Person("That Pizza Tower Fan", CreditsType.Dev, "Very Screwed, Phonophobia, Hellbreaker and Scopomania Composer",
+        [
+           new Social('youtube', 'https://www.youtube.com/c/ThatPizzaTowerFan')
+         ]
+      ),
+      new Person("MoldyGH", CreditsType.Dev, "Director, Creator, Programmer, Musician, Main Developer",
         [
            new Social('youtube', 'https://www.youtube.com/channel/UCHIvkOUDfbMCv-BEIPGgpmA'), 
            new Social('twitter', 'https://twitter.com/moldy_gh'),

@@ -45,6 +45,8 @@ class FreeplayState extends MusicBeatState
 
 	var moreDifficultySongs:Array<String> = ["House", "Insanity", "Polygonized", "Bonus-Song", "Furiosity", "Very-Screwed"]; //SEXERT
 
+	var deezonediff:Array<String> = ['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia', 'Torture'];
+
 	private var CurrentPack:Int = 0;
 
 	private var NameAlpha:Alphabet;
@@ -120,7 +122,7 @@ class FreeplayState extends MusicBeatState
 				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia'], 2, ['face']);
 			case 'extended':
 				addWeek(['Disruption', 'Applecore', 'Very-Screwed'], 2, ['bambi-piss-3d', 'bandu', 'bambi-angey']);
-				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia', 'Torture'], 2, ['face']);
+				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia', 'Green', 'Torture'], 2, ['GREEN','face','GREEN','face','face','GREEN','bambi-unfair']);
 		}
 	}
 
@@ -311,6 +313,7 @@ class FreeplayState extends MusicBeatState
 			if (curDifficulty > 3)
 				curDifficulty = 0;
 		}
+
 		if (songs[curSelected].week == 3)
 		{
 			curDifficulty = 1;
@@ -334,6 +337,7 @@ class FreeplayState extends MusicBeatState
 		{
 			case 3:
 				diffText.text = 'FINALE' + " - " + stupidBitch.toUpperCase();
+				diffText.color = FlxColor.WHITE;
 			default:
 				switch (curDifficulty)
 				{
@@ -351,6 +355,11 @@ class FreeplayState extends MusicBeatState
 						{
 						diffText.text = "EXTREME" + " - " + stupidBitch.toUpperCase();
 						diffText.color = 0x00DF0101;
+						}
+						else if (songs[curSelected].songName == 'Green')
+						{
+						diffText.text = "INSANE" + " - " + stupidBitch.toUpperCase();
+						diffText.color = 0x00B40404;
 						}
 						else
 						{

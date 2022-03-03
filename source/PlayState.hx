@@ -56,6 +56,8 @@ using StringTools;
 
 class PlayState extends MusicBeatState
 {
+	public static var STRUM_X = 42; //FISH ENGINE ??!?!?!?!?Ç
+
 	public static var curStage:String = '';
 	public static var characteroverride:String = "none";
 	public static var formoverride:String = "none";
@@ -113,6 +115,10 @@ class PlayState extends MusicBeatState
 	public var elapsedtime:Float = 0;
 
 	var focusOnDadGlobal:Bool = true;
+
+	var songPercent:Float = 0;
+
+	var songLength:Float = 0;
 
 	var funnyFloatyBoys:Array<String> = ['dave-angey', 'bambi-3d', 'dave-annoyed-3d', 'dave-3d-standing-bruh-what', 'bambi-unfair', 'bambi-helium', 'unfair-helium', 'SEAL', 'bambi-phono', 'hell', 'OPPOSITION', 'thearchy', 'GREEN'];
 	var funnyFloatyBoys2:Array<String> = ['dave-corrupt', 'dave-corrupt-2', 'dave-corrupt-3', 'dave-corrupt-4', 'dave-corrupt-5', 'dave-corrupt-6', 'dave-corrupt-7'];
@@ -223,9 +229,21 @@ class PlayState extends MusicBeatState
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
 
+	var timeTxt:FlxText;
+
+	var timeName:FlxText;
+
+	var scoreTxtTween:FlxTween;
+
+	var timeTxtTween:FlxTween;
+
+	var timeNameTween:FlxTween;
+
 	var GFScared:Bool = false;
 
 	public static var campaignScore:Int = 0;
+
+	private var updateTime:Bool = true;
 
 	var defaultCamZoom:Float = 1.05;
 
@@ -647,6 +665,31 @@ class PlayState extends MusicBeatState
 		if (FlxG.save.data.downscroll)
 			strumLine.y = FlxG.height - 165;
 
+		/*if (FlxG.save.data.downscroll)
+			altStrumLine.y = FlxG.height - 120;*/
+
+		var showTime:Bool = true;
+		timeTxt = new FlxText(42 + (FlxG.width / 2) - 278, 9, 400, SONG.song + "", 16);
+		timeTxt.setFormat("Comic Sans MS Bold", 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt.scrollFactor.set();
+		timeTxt.alpha = 0;
+		timeTxt.borderSize = 2;
+		timeTxt.visible = showTime;
+		if(FlxG.save.data.downscroll) timeTxt.y = FlxG.height - 44;
+
+		add(timeTxt);
+
+		var showTime:Bool = true;
+		timeName = new FlxText(42 + (FlxG.width / 2) - 336, 9, 400, SONG.song + "-", 16);
+		timeName.setFormat("Comic Sans MS Bold", 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeName.scrollFactor.set();
+		timeName.alpha = 0;
+		timeName.borderSize = 2;
+		timeName.visible = showTime;
+		if(FlxG.save.data.downscroll) timeName.y = FlxG.height - 44;
+
+		//add(timeName);
+
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		add(strumLineNotes);
 
@@ -729,20 +772,11 @@ class PlayState extends MusicBeatState
 				credits = 'Haha da funny pitch';
 			case 'very-screwed':
 				credits = 'YOU FUCKING LIAR MOLDY!!';
+			case 'green':
+				credits = "YOU'RE DOOMED HAHA FUCK YOU.";
 			default:
 				credits = '';
 		}
-		/*var randomThingy:Int = FlxG.random.int(0, 2);
-		var engineName:String = 'stupid';
-		switch(randomThingy)
-	    {
-			case 0:
-				engineName = 'Dave ';
-			case 1:
-				engineName = 'Bambi ';
-			case 2:
-				engineName = 'Tristan ';
-		}*/
 		var creditsText:Bool = credits != '';
 		var textYPos:Float = healthBarBG.y + 50;
 		if (creditsText)
@@ -750,10 +784,7 @@ class PlayState extends MusicBeatState
 			textYPos = healthBarBG.y + 30;
 		}
 		// Add Kade Engine watermark
-		kadeEngineWatermark = new FlxText(4, textYPos, 0,
-		SONG.song
-		+ " "
-		+ (curSong.toLowerCase() != 'splitathon' ? (storyDifficulty == 3 && SONG.song.toLowerCase() != "very-screwed" ? "Legacy" : storyDifficulty == 3 && SONG.song.toLowerCase() == "very-screwed" ? "EXTREME" : storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "Normal" : "Easy") : "Finale"), 16);
+		kadeEngineWatermark = new FlxText(4, textYPos, 0, SONG.song + " " + (curSong.toLowerCase() != 'splitathon' ? (storyDifficulty == 3 && SONG.song.toLowerCase() != "very-screwed" ? "Legacy" : storyDifficulty == 3 && SONG.song.toLowerCase() == "very-screwed" ? "EXTREME" : storyDifficulty == 2 ? "Hard" : storyDifficulty == 1 ? "" : "Easy") : "Finale"), 16);
 		kadeEngineWatermark.setFormat(Paths.font("comic.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		kadeEngineWatermark.scrollFactor.set();
 		kadeEngineWatermark.borderSize = 1.25;
@@ -765,6 +796,8 @@ class PlayState extends MusicBeatState
 		creditsWatermark.borderSize = 1.25;
 		creditsWatermark.alpha = 0.65;
 		add(creditsWatermark);
+		timeTxt.cameras = [camHUD];
+		timeName.cameras = [camHUD];
 		creditsWatermark.cameras = [camHUD];
 
 		switch (curSong.toLowerCase())
@@ -856,11 +889,11 @@ class PlayState extends MusicBeatState
 					switch (spr.ID)
 					{
 					case 1:
-					   // spr.y -= 25;
+					   spr.y -= 25;
 					case 2:
-					   // spr.y -= 50;
+					   spr.y -= 50;
 					case 3:
-					   // spr.y -= 75;
+					   spr.y -= 75;
 					}
 				});
 			}
@@ -928,12 +961,12 @@ class PlayState extends MusicBeatState
 					bg.shader = testshader.shader;
 					curbg = bg;
 				}
-			case 'blocked' | 'corn-theft' | 'maze' | 'old-corn-theft' | 'old-maze' | 'mealie' | 'very-screwed'| 'splitathon':
+			case 'blocked' | 'corn-theft' | 'maze' | 'old-corn-theft' | 'old-maze' | 'mealie' | 'splitathon':
 				defaultCamZoom = 0.9;
 
 				switch (SONG.song.toLowerCase())
 				{
-					case 'splitathon' | 'mealie' | 'very-screwed':
+					case 'splitathon' | 'mealie':
 						curStage = 'bambiFarmNight';
 					case 'maze' | 'old-maze':
 						curStage = 'bambiFarmSunset';
@@ -1104,7 +1137,7 @@ class PlayState extends MusicBeatState
 				add(stageFront);
 
 				UsingNewCam = true;
-			case 'polygonized' | 'furiosity' | 'cheating' | 'unfairness' | 'cheating-high-pitched' | 'unfairness-high-pitched' | 'torture' | 'disruption':
+			case 'polygonized' | 'furiosity' | 'cheating' | 'unfairness' | 'cheating-high-pitched' | 'unfairness-high-pitched' | 'torture' | 'disruption' | 'very-screwed':
 				defaultCamZoom = 0.9;
 				var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('dave/redsky'));
 				bg.active = true;
@@ -1129,6 +1162,10 @@ class PlayState extends MusicBeatState
 						gfSpeed = 2;
 						bg.loadGraphic(Paths.image('dave/disruptor'));
 						curStage = 'disrupt';
+					case 'very-screwed':
+						bg.loadGraphic(Paths.image('dave/farmland'));
+						defaultCamZoom = 0.9;
+						curStage = 'FUCKYOU';
 						
 					default:
 						bg.loadGraphic(Paths.image('dave/redsky'));
@@ -1202,6 +1239,7 @@ class PlayState extends MusicBeatState
 				sprites.add(bg);
 				add(bg);
 			case 'scopomania':
+				gfSpeed = 5;
 			    curStage = 'black';
 				defaultCamZoom = 0.6;
 				var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('bambi/EYEbg'));
@@ -1209,6 +1247,7 @@ class PlayState extends MusicBeatState
 				sprites.add(bg);
 				add(bg);
 			case 'green':
+				gfSpeed = 5;
 			    curStage = 'black';
 				defaultCamZoom = 0.6;
 				var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('bambi/OPPOSITION files/theFunny3'));
@@ -1492,6 +1531,11 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.volume = 0;
 		}
 		if (SONG.song.toLowerCase() == 'disruption') FlxG.sound.music.volume = 1; // WEIRD BUG!!! WTF!!!
+
+		songLength = FlxG.sound.music.length;
+
+		FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+		FlxTween.tween(timeName, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 
 		#if desktop
 		DiscordClient.changePresence(detailsText
@@ -2426,7 +2470,7 @@ class PlayState extends MusicBeatState
 				});
 			}
 
-		if (/*SONG.song.toLowerCase() == 'unfairness' || */SONG.song.toLowerCase() == 'unfairness-high-pitched') // fuck you
+		if (SONG.song.toLowerCase() == 'unfairness' || SONG.song.toLowerCase() == 'unfairness-high-pitched') // fuck you
 			{
 				playerStrums.forEach(function(spr:FlxSprite)
 				{
@@ -2440,7 +2484,7 @@ class PlayState extends MusicBeatState
 				});
 			}
 
-		if (SONG.song.toLowerCase() == 'tortures') // fuck you
+		if (SONG.song.toLowerCase() == 'torture') // fuck you
 			{
 				playerStrums.forEach(function(spr:FlxSprite)
 				{
@@ -2680,6 +2724,20 @@ class PlayState extends MusicBeatState
 					Conductor.lastSongPos = Conductor.songPosition;
 				}
 			}
+
+			if(updateTime) 
+				{
+					var curTime:Float = Conductor.songPosition;
+					if(curTime < 0) curTime = 0;
+					songPercent = (curTime / songLength);
+
+					var songCalc:Float = (songLength - curTime);
+
+					var secondsTotal:Int = Math.floor(songCalc / 1000);
+					if(secondsTotal < 0) secondsTotal = 0;
+					
+					timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false);
+				}
 
 		}
 
@@ -3557,6 +3615,8 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = false;
 		canPause = false;
+		updateTime = false;
+
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 		if (SONG.validScore)
@@ -3866,6 +3926,19 @@ class PlayState extends MusicBeatState
 				else if (combo > 4)
 					daRating = 'bad';
 			 */
+
+			if(scoreTxtTween != null) 
+			{
+				scoreTxtTween.cancel();
+			}
+
+			scoreTxt.scale.x = 1.1;
+			scoreTxt.scale.y = 1.1;
+			scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
+				onComplete: function(twn:FlxTween) {
+					scoreTxtTween = null;
+				}
+			});
 
 			var pixelShitPart1:String = "";
 			var pixelShitPart2:String = '';
@@ -4993,6 +5066,38 @@ class PlayState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
+
+		if(curBeat % camBeatSnap == 0)
+		{
+			if(timeTxtTween != null) 
+			{
+				timeTxtTween.cancel();
+			}
+
+			timeTxt.scale.x = 1.1;
+			timeTxt.scale.y = 1.1;
+			timeTxtTween = FlxTween.tween(timeTxt.scale, {x: 1, y: 1}, 0.2, {
+				onComplete: function(twn:FlxTween) {
+					timeTxtTween = null;
+				}
+			});
+		}
+
+		if(curBeat % camBeatSnap == 0)
+		{
+			if(timeNameTween != null) 
+			{
+				timeNameTween.cancel();
+			}
+
+			timeName.scale.x = 1.1;
+			timeName.scale.y = 1.1;
+			timeNameTween = FlxTween.tween(timeName.scale, {x: 1, y: 1}, 0.2, {
+				onComplete: function(twn:FlxTween) {
+					timeNameTween = null;
+				}
+			});
+		}
 
 		if (!UsingNewCam)
 		{

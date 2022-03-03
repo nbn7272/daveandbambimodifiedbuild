@@ -40,7 +40,7 @@ class PauseSubState extends MusicBeatSubstate
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
 		levelInfo.text += PlayState.SONG.song;
 		levelInfo.scrollFactor.set();
-		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
+		levelInfo.setFormat(Paths.font("comic.ttf"), 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
@@ -48,7 +48,7 @@ class PauseSubState extends MusicBeatSubstate
 		levelDifficulty.text += CoolUtil.difficultyString();
 		if (PlayState.SONG.song == 'Hellbreaker') levelDifficulty.text = "you're dead lol";
 		levelDifficulty.scrollFactor.set();
-		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
+		levelDifficulty.setFormat(Paths.font('comic.ttf'), 32);
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
