@@ -1004,7 +1004,9 @@ class Controls extends FlxActionSet
 
 	public function setKeyboardScheme(scheme:KeyboardScheme, reset = true)
 	{
-		if (reset)
+		loadKeyBinds();
+		
+		/*if (reset)
 			removeKeyboard();
 
 		keyboardScheme = scheme;
@@ -1166,7 +1168,41 @@ class Controls extends FlxActionSet
 				bindKeys(Control.N7, [FlxKey.NUMPADTHREE, FlxKey.THREE]);
 				bindKeys(Control.N8, [FlxKey.ENTER]);
 		}
-		#end
+		#end*/
+	}
+
+	public function loadKeyBinds()
+	{
+
+		//trace(FlxKey.fromString(FlxG.save.data.upBind));
+
+		removeKeyboard();
+
+		inline bindKeys(Control.UP, [FlxKey.fromString(FlxG.save.data.upBind), FlxKey.UP]);
+		inline bindKeys(Control.DOWN, [FlxKey.fromString(FlxG.save.data.downBind), FlxKey.DOWN]);
+		inline bindKeys(Control.LEFT, [FlxKey.fromString(FlxG.save.data.leftBind), FlxKey.LEFT]);
+		inline bindKeys(Control.RIGHT, [FlxKey.fromString(FlxG.save.data.rightBind), FlxKey.RIGHT]);
+		inline bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
+		inline bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
+		inline bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
+		inline bindKeys(Control.RESET, [FlxKey.fromString(FlxG.save.data.killBind)]);
+
+		inline  bindKeys(Control.N0, [A]);
+		inline	bindKeys(Control.N1, [S]);
+		inline	bindKeys(Control.N2, [D]);
+		inline	bindKeys(Control.N3, [F]);
+		inline	bindKeys(Control.N4, [FlxKey.SPACE]);
+		inline	bindKeys(Control.N5, [H]);
+		inline	bindKeys(Control.N6, [J]);
+		inline	bindKeys(Control.N7, [K]);
+		inline	bindKeys(Control.N8, [L]);
+
+		inline	bindKeys(Control.L1, [S]);
+		inline	bindKeys(Control.U1, [D]);
+		inline	bindKeys(Control.R1, [F]);
+		inline	bindKeys(Control.L2, [J]);
+		inline	bindKeys(Control.D1, [K]);
+		inline	bindKeys(Control.R2, [L]);
 	}
 
 	function removeKeyboard()

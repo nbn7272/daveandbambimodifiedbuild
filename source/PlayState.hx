@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.keyboard.FlxKey;
 import flixel.tweens.misc.ColorTween;
 import flixel.math.FlxRandom;
 import openfl.net.FileFilter;
@@ -699,7 +700,7 @@ class PlayState extends MusicBeatState
 		
 		poopStrums = new FlxTypedGroup<StrumNote>(); //BRO I FORGOT ABT THIS ONE I THING IT WORKS NOW. IT WORKS!!!!
 
-		/*if(darkLevels.contains(curStage) && SONG.song.toLowerCase() != "polygonized") //doesnt work :sob:
+		/*if(darkLevels.contains(curStage) && SONG.song.toLowerCase() != "polygonized") //doesnt work :sob: //i hope this works in the future
 			{
 				strumLineNotes.color = 0xFF878787;
 				dadStrums.color = 0xFF878787;
@@ -711,7 +712,9 @@ class PlayState extends MusicBeatState
 				dadStrums.color = FlxColor.WHITE;
 				playerStrums.color = FlxColor.WHITE;
 			}*/
-
+		
+		/*generateStaticArrows(0); //dont put this thing here https://cdn.discordapp.com/attachments/942537213193896017/949360786919292978/unknown.png
+		generateStaticArrows(1);*/
 		generateSong(SONG.song);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -1388,6 +1391,7 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
+
 		inCutscene = false;
 
 		generateStaticArrows(0);
@@ -1596,18 +1600,10 @@ class PlayState extends MusicBeatState
 				var daNoteStyle:String = songNotes[3];
 
 				var gottaHitNote:Bool = section.mustHitSection;
-				if (curSong == 'Supernovae')
-				{
-				gottaHitNote = !gottaHitNote;
-				}
 
-				if (songNotes[1] >= mn && curSong != 'Supernovae')
+				if (songNotes[1] >= mn)
 				{
 					gottaHitNote = !section.mustHitSection;
-				}
-				if (songNotes[1] >= mn && curSong == 'Supernovae')
-				{
-					gottaHitNote = section.mustHitSection;
 				}
 
 				var oldNote:Note;
@@ -1623,8 +1619,8 @@ class PlayState extends MusicBeatState
 				var susLength:Float = swagNote.sustainLength;
 
 				susLength = susLength / Conductor.stepCrochet;
-				unspawnNotes.push(swagNote);
-				//notes.add(swagNote); //srry a lot of lag
+				//unspawnNotes.push(swagNote);
+				notes.add(swagNote); //srry a lot of lag
 
 				for (susNote in 0...Math.floor(susLength))
 				{
@@ -1633,7 +1629,7 @@ class PlayState extends MusicBeatState
 					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true,
 						gottaHitNote);
 					sustainNote.scrollFactor.set();
-					unspawnNotes.push(sustainNote);
+					//unspawnNotes.push(sustainNote);
 					notes.add(sustainNote);
 
 					sustainNote.mustPress = gottaHitNote;
@@ -1706,13 +1702,25 @@ class PlayState extends MusicBeatState
 
 			if (elpepe.contains(dad.curCharacter) && player == 0 || dad.curCharacter == 'scopomania' && player == 0 || elpepe.contains(boyfriend.curCharacter) && player == 1)
 			{
-					switch (dad.curCharacter)
+					if (player == 0)
+					{switch (dad.curCharacter)
 					{
 						case 'bambi-angey': //idc
 							babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets_JUNK');
 						default:
 							babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets_3D');
 					}
+					}
+					else
+					{switch (boyfriend.curCharacter)
+					{
+						case 'bambi-angey': //idc
+							babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets_JUNK');
+						default:
+							babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets_3D');
+					}
+					}
+
 					babyArrow.animation.addByPrefix('green', 'arrowUP');
 					babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
 					babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
@@ -2072,103 +2080,117 @@ class PlayState extends MusicBeatState
 
 				if (dad.POOP) spr.angle += (Math.sin(elapsed * 2) * 0.5 + 0.5) * spr.ID == 1 ? 0.65 : -0.65;
 			});
-
-			playerStrums.forEach(function(spr:StrumNote){
-				noteJunksPlayer[spr.ID] = spr.y; //junk 13
-			});
-			dadStrums.forEach(function(spr:StrumNote){
-				noteJunksDad[spr.ID] = spr.y; //14, i am not going to fucking count more.
-			});
-			if (unfairPart) {
-				var num:Float = 1;
-				if (mania == 1) num = 1.5;
-				if (mania == 2) num = 2.25;
-				playerStrums.forEach(function(spr:StrumNote)
-				{
-					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedtime + (spr.ID)) * 300);
-					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedtime + (spr.ID)) * 300);
+			if (FlxG.save.data.modchart)
+			{
+				playerStrums.forEach(function(spr:StrumNote){
+					noteJunksPlayer[spr.ID] = spr.y; //junk 13
 				});
-				dadStrums.forEach(function(spr:StrumNote)
-				{
-					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedtime + (spr.ID )) * 2) * 300);
-					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime + (spr.ID)) * 2) * 300);
+				dadStrums.forEach(function(spr:StrumNote){
+					noteJunksDad[spr.ID] = spr.y; //14, i am not going to fucking count more.
 				});
-			}
-			if (SONG.notes[Math.floor(curStep / 16)] != null) {
-				if (SONG.notes[Math.floor(curStep / 16)].altAnim && !unfairPart) {
-					var krunkThing = 60;
-					if (mania == 1) krunkThing = 50;
-					if (mania == 2) krunkThing = 40;
+				if (unfairPart) 
+				{
+					var num:Float = 1;
+					if (mania == 1) num = 1.5;
+					if (mania == 2) num = 2.25;
 					playerStrums.forEach(function(spr:StrumNote)
 					{
-						spr.x = arrowJunks[spr.ID + keyAmmo[mania] * 2][0] + (Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) * krunkThing;
-						spr.y = arrowJunks[spr.ID + keyAmmo[mania] * 2][1] + Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1) * krunkThing;
-	
-						spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
-	
-						spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
-			
-						spr.scale.x += 0.2;
-						spr.scale.y += 0.2;
-	
-						spr.scale.x *= 1.5;
-						spr.scale.y *= 1.5;
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedtime + (spr.ID)) * 300);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedtime + (spr.ID)) * 300);
 					});
-
-					poopStrums.forEach(function(spr:StrumNote)
+					dadStrums.forEach(function(spr:StrumNote)
 					{
-						spr.x = arrowJunks[spr.ID + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) * krunkThing;
-						spr.y = swagThings.members[spr.ID].y + Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1) * krunkThing;
-	
-						spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
-	
-						spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
-			
-						spr.scale.x += 0.2;
-						spr.scale.y += 0.2;
-	
-						spr.scale.x *= 1.5;
-						spr.scale.y *= 1.5;
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedtime + (spr.ID )) * 2) * 300);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime + (spr.ID)) * 2) * 300);
 					});
-
-					notes.forEachAlive(function(spr:Note){
-							//spr.x = arrowJunks[spr.noteData + keyAmmo[mania] * 2][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing;
-
-							if (!spr.isSustainNote && spr.mustPress) {
+				}
+				if (SONG.notes[Math.floor(curStep / 16)] != null) 
+				{
+					if (SONG.notes[Math.floor(curStep / 16)].altAnim && !unfairPart) 
+					{
+						var krunkThing = 60;
+						if (mania == 1) krunkThing = 50;
+						if (mania == 2) krunkThing = 40;
+						playerStrums.forEach(function(spr:StrumNote)
+						{
+							spr.x = arrowJunks[spr.ID + keyAmmo[mania] * 2][0] + (Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) * krunkThing;
+							spr.y = arrowJunks[spr.ID + keyAmmo[mania] * 2][1] + Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1) * krunkThing;
 		
+							spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
+		
+							spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
+				
+							spr.scale.x += 0.2;
+							spr.scale.y += 0.2;
+		
+							spr.scale.x *= 1.5;
+							spr.scale.y *= 1.5;
+						});
+
+						poopStrums.forEach(function(spr:StrumNote)
+						{
+							spr.x = arrowJunks[spr.ID + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) * krunkThing;
+							spr.y = swagThings.members[spr.ID].y + Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1) * krunkThing;
+		
+							spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
+		
+							spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
+				
+							spr.scale.x += 0.2;
+							spr.scale.y += 0.2;
+		
+							spr.scale.x *= 1.5;
+							spr.scale.y *= 1.5;
+						});
+
+						notes.forEachAlive(function(spr:Note){
+								//spr.x = arrowJunks[spr.noteData + keyAmmo[mania] * 2][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing;
+
+								if (!spr.isSustainNote && spr.mustPress) {
+			
+									spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
+
+									spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
+							
+									spr.scale.x += 0.2;
+									spr.scale.y += 0.2;
+				
+									spr.scale.x *= 1.5;
+									spr.scale.y *= 1.5;
+								}
+						});
+						altNotes.forEachAlive(function(spr:Note){
+							spr.x = arrowJunks[(spr.noteData % keyAmmo[mania]) + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing;
+							#if debug
+							if (FlxG.keys.justPressed.SPACE) {
+								trace(arrowJunks[(spr.noteData % keyAmmo[mania]) + keyAmmo[mania]][0]);
+								trace(spr.noteData);
+								trace(spr.x == arrowJunks[(spr.noteData % keyAmmo[mania]) + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing);
+							}
+							#end
+
+							if (!spr.isSustainNote) {
+			
 								spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
 
 								spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
 						
 								spr.scale.x += 0.2;
 								spr.scale.y += 0.2;
-			
+				
 								spr.scale.x *= 1.5;
 								spr.scale.y *= 1.5;
 							}
+						});
+					}
+				}
+				else
+				{
+					playerStrums.forEach(function(spr:StrumNote)
+					{
 					});
-					altNotes.forEachAlive(function(spr:Note){
-						spr.x = arrowJunks[(spr.noteData % keyAmmo[mania]) + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing;
-						#if debug
-						if (FlxG.keys.justPressed.SPACE) {
-							trace(arrowJunks[(spr.noteData % keyAmmo[mania]) + keyAmmo[mania]][0]);
-							trace(spr.noteData);
-							trace(spr.x == arrowJunks[(spr.noteData % keyAmmo[mania]) + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing);
-						}
-						#end
-
-						if (!spr.isSustainNote) {
-		
-							spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
-
-							spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
-					
-							spr.scale.x += 0.2;
-							spr.scale.y += 0.2;
-			
-							spr.scale.x *= 1.5;
-							spr.scale.y *= 1.5;
-						}
+					poopStrums.forEach(function(spr:StrumNote)
+					{
 					});
 				}
 			}
@@ -2263,287 +2285,294 @@ class PlayState extends MusicBeatState
 			gf.y += (Math.sin(elapsedtime) * 0.6);
 		}
 
-		if (SONG.song.toLowerCase() == 'cheating' || SONG.song.toLowerCase() == 'cheating-high-pitched') // fuck you
-		{
-			playerStrums.forEach(function(spr:FlxSprite)
-			{
-				/*spr.x += Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
-				spr.x -= Math.sin(elapsedtime) * 1.5;*/
-				spr.angle += 40;
-			});
-			dadStrums.forEach(function(spr:FlxSprite)
-			{
-				/*spr.x -= Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
-				spr.x += Math.sin(elapsedtime) * 1.5;*/
-				spr.angle -= 40;
-			});
-			for(note in notes)
-			{
-				if(note.mustPress)
-				{
-					if (!note.isSustainNote)
-						note.angle = playerStrums.members[note.noteData].angle;
-				}
-				else
-				{
-					if (!note.isSustainNote)
-						note.angle = dadStrums.members[note.noteData].angle;
-				}
-			}
-		}
-
-		if (SONG.song.toLowerCase() == 'house')
-		{
-			playerStrums.forEach(function(spr:FlxSprite)
-			{
-
-			});
-			dadStrums.forEach(function(spr:FlxSprite)
-			{
-
-			});
-		}
-		if (SONG.song.toLowerCase() == 'disruption')poop.alpha = Math.sin(elapsedtime) / 2.5 + 0.4;
-		if (SONG.song.toLowerCase() == 'disruption') // deez all day
-		{
-			var krunkThing = 60;
-			if (mania == 1) krunkThing = 50;
-			if (mania == 2) krunkThing = 47;
-			if (mania == 3) krunkThing = 40;
-
-			//oop.alpha = Math.sin(elapsedtime) / 2.5 + 0.4;
-
-			playerStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = arrowJunks[spr.ID + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) * krunkThing;
-					spr.y = arrowJunks[spr.ID + keyAmmo[mania]][1] + Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1) * krunkThing;
-	
-					spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
-	
-					spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
-	
-					spr.scale.x += 0.2;
-					spr.scale.y += 0.2;
-	
-					spr.scale.x *= 1.5;
-					spr.scale.y *= 1.5;
-				});
-			dadStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = arrowJunks[spr.ID][0] + (Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) * krunkThing;
-					spr.y = arrowJunks[spr.ID][1] + Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1) * krunkThing;
-					
-					spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
-	
-					spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
-	
-					spr.scale.x += 0.2;
-					spr.scale.y += 0.2;
-	
-					spr.scale.x *= 1.5;
-					spr.scale.y *= 1.5;
-				});
-	
-			notes.forEachAlive(function(spr:Note){
-					if (spr.mustPress) {
-						spr.x = arrowJunks[spr.noteData + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing;
-						spr.y = arrowJunks[spr.noteData + keyAmmo[mania]][1] + Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1) * krunkThing;
-	
-						spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
-	
-						spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
-	
-						spr.scale.x += 0.2;
-						spr.scale.y += 0.2;
-	
-						spr.scale.x *= 1.5;
-						spr.scale.y *= 1.5;
-					}
-				else {
-						spr.x = arrowJunks[spr.noteData][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing;
-						spr.y = arrowJunks[spr.noteData][1] + Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1) * krunkThing;
-	
-						spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
-	
-						spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
-	
-						spr.scale.x += 0.2;
-						spr.scale.y += 0.2;
-	
-						spr.scale.x *= 1.5;
-						spr.scale.y *= 1.5;
-					}
-				});
-		}
-
-		/*if (SONG.song.toLowerCase() == 'hellbreaker')
-		{
-			playerStrums.forEach(function(spr:FlxSprite)
-			{
-			    if (spr.ID == 0) spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-				if (spr.ID == 0) spr.x -= Math.sin(elapsedtime * 0.5) * 1.5;
-				if (spr.ID == 0) spr.angle += 0.5 * (0.5 * 4);//to stop the left arrow from staying still
-
-				if (spr.ID == 3) spr.x -= Math.sin(elapsedtime * 3) * (spr.ID == 3 ? 1 : 1.5);// nice spin bro
-
-				if (spr.ID != 0) spr.x += Math.sin(elapsedtime * spr.ID) * ((spr.ID % 2) == 0 ? 1 : -1);
-				if (spr.ID != 0 && spr.ID != 3) spr.x -= Math.sin(elapsedtime * 3) * (spr.ID == 1 ? 2 : 1.2);
-				if (spr.ID != 0) spr.angle += 0.5 * (spr.ID * 4);
-			});
-			dadStrums.forEach(function(spr:FlxSprite)
-			{
-				if (spr.ID == 0) spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-				if (spr.ID == 0) spr.x += Math.sin(elapsedtime * 0.5) * 1.5;
-				if (spr.ID == 0) spr.angle += 0.5 * (0.5 * 4);//to stop the left arrow from staying still
-
-				if (spr.ID == 3) spr.x += Math.sin(elapsedtime * 3) * (spr.ID == 3 ? 1 : 1.5);// nice spin bro
-
-				if (spr.ID != 0) spr.x -= Math.sin(elapsedtime * spr.ID) * ((spr.ID % 2) == 0 ? 1 : -1);
-				if (spr.ID != 0 && spr.ID != 3) spr.x += Math.sin(elapsedtime * 3) * (spr.ID == 1 ? 2 : 1.2);
-				if (spr.ID == 3) spr.x += Math.sin(elapsedtime * 3) * (spr.ID == 3 ? 1 : 1.5);
-				if (spr.ID != 0) spr.angle += 0.5 * (spr.ID * 4);
-			});
-		}*/
-
-		if (SONG.song.toLowerCase() == 'opposition') // no
-			{
-				playerStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin(elapsedtime * 4 + (spr.ID)) * FlxG.random.int(500, 520));
-					spr.x += 500;
-					spr.y -= -Math.sin(elapsedtime * 2) * 1.6;
-					if (!swag)
-					{
-					swag = true;
-					spr.y -= 400;
-					}
-				});
-				dadStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin((elapsedtime * 4 + (spr.ID )) * 2) * FlxG.random.int(500, 520));
-					spr.x += 500;
-					spr.y -= -Math.sin(elapsedtime * 2) * 1.6;
-					if (!swag2)
-					{
-					swag2 = true;
-					spr.y -= 400;
-					}
-				});
-			}
-		if (SONG.song.toLowerCase() == 'thearchy') // no
-			{
-				playerStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin(elapsedtime * 4 + (spr.ID)) * FlxG.random.int(500, 520));
-					spr.x += 500;
-				});
-				dadStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin((elapsedtime * 4 + (spr.ID )) * 2) * FlxG.random.int(500, 520));
-					spr.x += 500;
-				});
-			}
-
-		if (SONG.song.toLowerCase() == 'phonophobia' && curBeat > 10) // no
-			{
-				dadStrums.forEach(function(spr:FlxSprite)
-				{
-					if (!swag) spr.y += 1;
-					if (!swag) strumLine.y += 1;
-					if (spr.y < 50)
-					{
-					swag2 = true;
-					swag = false;
-					}
-					if (!swag2) spr.y -= 1;
-					if (!swag2) strumLine.y -= 1;// most of the code is here because it measures height whereas playerstrums just detects a variable and changes the y lol
-					if (spr.y > FlxG.height - 50)
-					{
-					swag = true;
-					swag2 = false;
-					}
-				});
-				playerStrums.forEach(function(spr:FlxSprite)
-				{
-					if (!swag) spr.y += 1;
-					if (!swag2) spr.y -= 1;
-				});
-			}
-
-		if (SONG.song.toLowerCase() == 'unfairness' || SONG.song.toLowerCase() == 'unfairness-high-pitched') // fuck you
-			{
-				playerStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedtime + (spr.ID)) * 300);
-					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedtime + (spr.ID)) * 300);
-				});
-				dadStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedtime + (spr.ID )) * 2) * 300);
-					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime + (spr.ID)) * 2) * 300);
-				});
-			}
-
-		if (SONG.song.toLowerCase() == 'torture') // fuck you
-			{
-				playerStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedtime + (spr.ID * 1.5)) * 150);
-					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedtime + (spr.ID * 1.5)) * 150);
-				});
-				dadStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedtime * 2) + (spr.ID * 1.5)) * 300);
-					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime * 2) + (spr.ID * 1.5)) * 300);
-				});
-			}
 		
-		if (SONG.song.toLowerCase() == 'very-screwed')
-        {
-            playerStrums.forEach(function(spr:FlxSprite)
-                {
-                    switch (spr.ID)
-                    {
-                        case 0:
-                            spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-                            spr.x += Math.sin(elapsedtime * 0.5) * 0.1;
-                        case 1:
-                            spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-                            spr.x -= Math.sin(elapsedtime * 0.5) * 0.1;
-                        case 2:
-                            spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-                            spr.x += Math.sin(elapsedtime * 0.5) * 0.1;
-                        case 3:
-                            spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-                            spr.x -= Math.sin(elapsedtime * 0.5) * 0.1;
-                    }
-                });
-            dadStrums.forEach(function(spr:FlxSprite)
-                {
-                    spr.alpha = 0.5;
-                    switch (spr.ID)
-                    {
-                        case 0:
-                            spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-                            spr.x -= Math.sin(elapsedtime * 0.5) * 0.1;
-                        case 1:
-                            spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-                            spr.x += Math.sin(elapsedtime * 0.5) * 0.1;
-                        case 2:
-                            spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-                            spr.x -= Math.sin(elapsedtime * 0.5) * 0.1;
-                        case 3:
-                            spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
-                            spr.x += Math.sin(elapsedtime * 0.5) * 0.1;
-                    }
-                });
-			for (funneNote in notes)
-			   {
-			       if (!funneNote.mustPress)
-			       {
-			           funneNote.alpha = 0.5;
-			       }
-			   }
+		if (SONG.song.toLowerCase() == 'disruption')poop.alpha = Math.sin(elapsedtime) / 2.5 + 0.4;
+
+		//welcome to funny modchart land i hope u enjoy
+		if (FlxG.save.data.modchart)
+		{
+			if (SONG.song.toLowerCase() == 'cheating' || SONG.song.toLowerCase() == 'cheating-high-pitched') // fuck you
+			{
+				playerStrums.forEach(function(spr:FlxSprite)
+				{
+					/*spr.x += Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+					spr.x -= Math.sin(elapsedtime) * 1.5;*/
+					spr.angle += 40;
+				});
+				dadStrums.forEach(function(spr:FlxSprite)
+				{
+					/*spr.x -= Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+					spr.x += Math.sin(elapsedtime) * 1.5;*/
+					spr.angle -= 40;
+				});
+				for(note in notes)
+				{
+					if(note.mustPress)
+					{
+						if (!note.isSustainNote)
+							note.angle = playerStrums.members[note.noteData].angle;
+					}
+					else
+					{
+						if (!note.isSustainNote)
+							note.angle = dadStrums.members[note.noteData].angle;
+					}
+				}
+			}
+
+			if (SONG.song.toLowerCase() == 'house')
+			{
+				playerStrums.forEach(function(spr:FlxSprite)
+				{
+
+				});
+				dadStrums.forEach(function(spr:FlxSprite)
+				{
+
+				});
+			}
+
+			if (SONG.song.toLowerCase() == 'disruption') // deez all day
+			{
+				var krunkThing = 60;
+				if (mania == 1) krunkThing = 50;
+				if (mania == 2) krunkThing = 47;
+				if (mania == 3) krunkThing = 40;
+
+				//oop.alpha = Math.sin(elapsedtime) / 2.5 + 0.4;
+
+				playerStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = arrowJunks[spr.ID + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) * krunkThing;
+						spr.y = arrowJunks[spr.ID + keyAmmo[mania]][1] + Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1) * krunkThing;
+		
+						spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
+		
+						spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
+		
+						spr.scale.x += 0.2;
+						spr.scale.y += 0.2;
+		
+						spr.scale.x *= 1.5;
+						spr.scale.y *= 1.5;
+					});
+				dadStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = arrowJunks[spr.ID][0] + (Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) * krunkThing;
+						spr.y = arrowJunks[spr.ID][1] + Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1) * krunkThing;
+						
+						spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.ID % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
+		
+						spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
+		
+						spr.scale.x += 0.2;
+						spr.scale.y += 0.2;
+		
+						spr.scale.x *= 1.5;
+						spr.scale.y *= 1.5;
+					});
+		
+				notes.forEachAlive(function(spr:Note){
+						if (spr.mustPress) {
+							spr.x = arrowJunks[spr.noteData + keyAmmo[mania]][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing;
+							spr.y = arrowJunks[spr.noteData + keyAmmo[mania]][1] + Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1) * krunkThing;
+		
+							spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
+		
+							spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
+		
+							spr.scale.x += 0.2;
+							spr.scale.y += 0.2;
+		
+							spr.scale.x *= 1.5;
+							spr.scale.y *= 1.5;
+						}
+					else {
+							spr.x = arrowJunks[spr.noteData][0] + (Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) * krunkThing;
+							spr.y = arrowJunks[spr.noteData][1] + Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1) * krunkThing;
+		
+							spr.scale.x = Math.abs(Math.sin(elapsedtime - 5) * ((spr.noteData % 2) == 0 ? 1 : -1)) / keyAmmo[mania];
+		
+							spr.scale.y = Math.abs((Math.sin(elapsedtime) * ((spr.noteData % 2) == 0 ? 1 : -1)) / (keyAmmo[mania] / 2));
+		
+							spr.scale.x += 0.2;
+							spr.scale.y += 0.2;
+		
+							spr.scale.x *= 1.5;
+							spr.scale.y *= 1.5;
+						}
+					});
+			}
+
+			if (SONG.song.toLowerCase() == 'hellbreaker')
+			{
+				playerStrums.forEach(function(spr:FlxSprite)
+				{
+					if (spr.ID == 0) spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+					if (spr.ID == 0) spr.x -= Math.sin(elapsedtime * 0.5) * 1.5;
+					if (spr.ID == 0) spr.angle += 0.5 * (0.5 * 4);//to stop the left arrow from staying still
+
+					if (spr.ID == 3) spr.x -= Math.sin(elapsedtime * 3) * (spr.ID == 3 ? 1 : 1.5);// nice spin bro
+
+					if (spr.ID != 0) spr.x += Math.sin(elapsedtime * spr.ID) * ((spr.ID % 2) == 0 ? 1 : -1);
+					if (spr.ID != 0 && spr.ID != 3) spr.x -= Math.sin(elapsedtime * 3) * (spr.ID == 1 ? 2 : 1.2);
+					if (spr.ID != 0) spr.angle += 0.5 * (spr.ID * 4);
+				});
+				dadStrums.forEach(function(spr:FlxSprite)
+				{
+					if (spr.ID == 0) spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+					if (spr.ID == 0) spr.x += Math.sin(elapsedtime * 0.5) * 1.5;
+					if (spr.ID == 0) spr.angle += 0.5 * (0.5 * 4);//to stop the left arrow from staying still
+
+					if (spr.ID == 3) spr.x += Math.sin(elapsedtime * 3) * (spr.ID == 3 ? 1 : 1.5);// nice spin bro
+
+					if (spr.ID != 0) spr.x -= Math.sin(elapsedtime * spr.ID) * ((spr.ID % 2) == 0 ? 1 : -1);
+					if (spr.ID != 0 && spr.ID != 3) spr.x += Math.sin(elapsedtime * 3) * (spr.ID == 1 ? 2 : 1.2);
+					if (spr.ID == 3) spr.x += Math.sin(elapsedtime * 3) * (spr.ID == 3 ? 1 : 1.5);
+					if (spr.ID != 0) spr.angle += 0.5 * (spr.ID * 4);
+				});
+			}
+
+			if (SONG.song.toLowerCase() == 'opposition') // no
+				{
+					playerStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin(elapsedtime * 4 + (spr.ID)) * FlxG.random.int(500, 520));
+						spr.x += 500;
+						spr.y -= -Math.sin(elapsedtime * 2) * 1.6;
+						if (!swag)
+						{
+						swag = true;
+						spr.y -= 400;
+						}
+					});
+					dadStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin((elapsedtime * 4 + (spr.ID )) * 2) * FlxG.random.int(500, 520));
+						spr.x += 500;
+						spr.y -= -Math.sin(elapsedtime * 2) * 1.6;
+						if (!swag2)
+						{
+						swag2 = true;
+						spr.y -= 400;
+						}
+					});
+				}
+			if (SONG.song.toLowerCase() == 'thearchy') // no
+				{
+					playerStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin(elapsedtime * 4 + (spr.ID)) * FlxG.random.int(500, 520));
+						spr.x += 500;
+					});
+					dadStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin((elapsedtime * 4 + (spr.ID )) * 2) * FlxG.random.int(500, 520));
+						spr.x += 500;
+					});
+				}
+
+			if (SONG.song.toLowerCase() == 'phonophobia' && curBeat > 10) // no
+				{
+					dadStrums.forEach(function(spr:FlxSprite)
+					{
+						if (!swag) spr.y += 1;
+						if (!swag) strumLine.y += 1;
+						if (spr.y < 50)
+						{
+						swag2 = true;
+						swag = false;
+						}
+						if (!swag2) spr.y -= 1;
+						if (!swag2) strumLine.y -= 1;// most of the code is here because it measures height whereas playerstrums just detects a variable and changes the y lol
+						if (spr.y > FlxG.height - 50)
+						{
+						swag = true;
+						swag2 = false;
+						}
+					});
+					playerStrums.forEach(function(spr:FlxSprite)
+					{
+						if (!swag) spr.y += 1;
+						if (!swag2) spr.y -= 1;
+					});
+				}
+
+			if (SONG.song.toLowerCase() == 'unfairness' || SONG.song.toLowerCase() == 'unfairness-high-pitched') // fuck you
+				{
+					playerStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedtime + (spr.ID)) * 300);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedtime + (spr.ID)) * 300);
+					});
+					dadStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedtime + (spr.ID )) * 2) * 300);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime + (spr.ID)) * 2) * 300);
+					});
+				}
+
+			if (SONG.song.toLowerCase() == 'torture') // fuck you
+				{
+					playerStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedtime + (spr.ID * 1.5)) * 150);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedtime + (spr.ID * 1.5)) * 150);
+					});
+					dadStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedtime * 2) + (spr.ID * 1.5)) * 300);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime * 2) + (spr.ID * 1.5)) * 300);
+					});
+				}
+			
+			if (SONG.song.toLowerCase() == 'very-screwed')
+			{
+				playerStrums.forEach(function(spr:FlxSprite)
+					{
+						switch (spr.ID)
+						{
+							case 0:
+								spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+								spr.x += Math.sin(elapsedtime * 0.5) * 0.1;
+							case 1:
+								spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+								spr.x -= Math.sin(elapsedtime * 0.5) * 0.1;
+							case 2:
+								spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+								spr.x += Math.sin(elapsedtime * 0.5) * 0.1;
+							case 3:
+								spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+								spr.x -= Math.sin(elapsedtime * 0.5) * 0.1;
+						}
+					});
+				dadStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.alpha = 0.5;
+						switch (spr.ID)
+						{
+							case 0:
+								spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+								spr.x -= Math.sin(elapsedtime * 0.5) * 0.1;
+							case 1:
+								spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+								spr.x += Math.sin(elapsedtime * 0.5) * 0.1;
+							case 2:
+								spr.x += Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+								spr.x -= Math.sin(elapsedtime * 0.5) * 0.1;
+							case 3:
+								spr.x -= Math.sin(elapsedtime * 0.5) * ((spr.ID % 2) == 0 ? 1 : -1);
+								spr.x += Math.sin(elapsedtime * 0.5) * 0.1;
+						}
+					});
+				for (funneNote in notes)
+				{
+					if (!funneNote.mustPress)
+					{
+						funneNote.alpha = 0.5;
+					}
+				}
+			}
 		}
 			
 		FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]); // this is very stupid but doesn't effect memory all that much so
@@ -2849,10 +2878,10 @@ class PlayState extends MusicBeatState
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
 		unspawnThing = false;
-		if (unspawnNotes[0] != null)
+		/*if (unspawnNotes[0] != null) //HUHHH WHERE IT GO
 		{
-			/*if (unspawnNotes[0].strumTime - Conductor.songPosition < 150000)
-			{*/
+			if (unspawnNotes[0].strumTime - Conductor.songPosition < 150000)
+			{
 				var dunceNote:Note = unspawnNotes[0];
 				notes.add(dunceNote);
 				dunceNote.finishedGenerating = true;
@@ -2860,7 +2889,7 @@ class PlayState extends MusicBeatState
 				var index:Int = unspawnNotes.indexOf(dunceNote);
 				unspawnNotes.splice(index, 1);
 				unspawnThing = true;
-			//}
+			}
 			if (unspawnNotes[1] != null && unspawnThing)
 		    {
 			    var dunceNote:Note = unspawnNotes[0];
@@ -2889,7 +2918,7 @@ class PlayState extends MusicBeatState
 				var index:Int = unspawnNotes.indexOf(dunceNote);
 				unspawnNotes.splice(index, 1);
 		    }
-		}
+		}*/
 		altUnspawnThing = false;
 		if (altUnspawnNotes[0] != null)
 		{
@@ -3151,37 +3180,75 @@ class PlayState extends MusicBeatState
 				switch (SONG.song.toLowerCase())
 				{
 					case 'applecore':
-						if (unfairPart)
+						if (FlxG.save.data.modchart)
 						{
-						    if (daNote.MyStrum != null)
-						    {
-							if (FlxG.save.data.downscroll)
-								daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+							if (unfairPart)
+								{
+									if (daNote.MyStrum != null)
+									{
+										if (FlxG.save.data.downscroll)
+											daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+										else
+											daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+									}
+									else
+									{
+										daNote.y = ((daNote.mustPress ? noteJunksPlayer[daNote.noteData] : noteJunksDad[daNote.noteData])- (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(1 * daNote.LocalScrollSpeed, 2))); // couldnt figure out this stupid mystrum thing
+									}
+								}
+							if (daNote.MyStrum != null)
+								{
+									if (FlxG.save.data.downscroll)
+										daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+									else
+										daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+								}
 							else
-								daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
-						    }
-						    else
 							{
-							daNote.y = ((daNote.mustPress ? noteJunksPlayer[daNote.noteData] : noteJunksDad[daNote.noteData])- (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(1 * daNote.LocalScrollSpeed, 2))); // couldnt figure out this stupid mystrum thing
-						    }
+								if (daNote.MyStrum != null)
+								{
+									if (FlxG.save.data.downscroll)
+										daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+									else
+										daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+								}
+								else
+								{
+									if (FlxG.save.data.downscroll)
+										daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * 1, 2)));
+									else
+										daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * 1, 2)));
+								}
+								
+							}
 						}
 						else
 						{
-						    if (daNote.MyStrum != null)
-						    {
-							if (FlxG.save.data.downscroll)
-								daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+							if (daNote.MyStrum != null)
+								{
+									if (FlxG.save.data.downscroll)
+										daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+									else
+										daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+								}
 							else
-								daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
-						    }
-						    else
 							{
-							if (FlxG.save.data.downscroll)
-								daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * 1, 2)));
-							else
-								daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * 1, 2)));
-						    }
-							
+								if (daNote.MyStrum != null)
+								{
+									if (FlxG.save.data.downscroll)
+										daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+									else
+										daNote.y = (daNote.MyStrum.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * daNote.LocalScrollSpeed, 2)));
+								}
+								else
+								{
+									if (FlxG.save.data.downscroll)
+										daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (-0.45 * FlxMath.roundDecimal(SONG.speed * 1, 2)));
+									else
+										daNote.y = (strumLine.y - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(SONG.speed * 1, 2)));
+								}
+								
+							}
 						}
 					default:
 						if (daNote.MyStrum != null)
@@ -3211,18 +3278,16 @@ class PlayState extends MusicBeatState
 					else strumliney = strumLine.y;
 				}
 
-				//if (daNote.tooLate || daNote.y >= strumliney + 106 && FlxG.save.data.downscroll)
-				if (((daNote.y < -daNote.height && !FlxG.save.data.downscroll || daNote.y >= strumliney + 106 && FlxG.save.data.downscroll) && SONG.song.toLowerCase() != 'applecore') 
-					|| (SONG.song.toLowerCase() == 'applecore' && unfairPart && daNote.y >= strumliney + 106) 
-					|| (SONG.song.toLowerCase() == 'applecore' && !unfairPart && (daNote.y < -daNote.height && !FlxG.save.data.downscroll || daNote.y >= strumliney + 106 && FlxG.save.data.downscroll)))
+				if (daNote.tooLate)
 				{
-				     /*if (botplay == true)
+				    /*if (botplay == true)
 						{
 						goodNoteHit(daNote);
 						daNote.kill();
 						notes.remove(daNote, true);
 						daNote.destroy();
 						}*/
+					trace("fuck you you're getting a miss"); //NOOOOO :sadspunchbop:
 					if (daNote.isSustainNote && daNote.wasGoodHit)
 					{
 						daNote.kill();
@@ -3232,7 +3297,7 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
-						if(daNote.mustPress && daNote.finishedGenerating && daNote.noteType != 1)
+						if(daNote.mustPress && daNote.noteType != 1)
 						{
 						    if (daNote.noteType == 2)
 							{
@@ -3332,21 +3397,6 @@ class PlayState extends MusicBeatState
 							{
 								sprite.playAnim('confirm', true);
 								sprite.resetAnim = time;
-								/*if (sprite.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
-								{
-									sprite.centerOffsets();
-									sprite.offset.x -= 13;
-									sprite.offset.y -= 13;
-								}
-								else
-								{
-									sprite.centerOffsets();
-								}
-								sprite.animation.finishCallback = function(name:String)
-								{
-									sprite.playAnimstatic',true);
-									sprite.centerOffsets();
-								}*/	
 							}
 						});
 
@@ -4089,6 +4139,89 @@ class PlayState extends MusicBeatState
 
 	private function keyShit():Void
 	{
+		var holdArray:Array<Bool> = [
+			controls.LEFT, 
+			controls.DOWN, 
+			controls.UP, 
+			controls.RIGHT
+		];
+		var pressArray:Array<Bool> = [
+			controls.LEFT_P,
+			controls.DOWN_P,
+			controls.UP_P,
+			controls.RIGHT_P
+		];
+		var releaseArray:Array<Bool> = [
+			controls.LEFT_R,
+			controls.DOWN_R,
+			controls.UP_R,
+			controls.RIGHT_R
+		];
+		
+		if (mania == 1)
+		{
+			holdArray = [	
+				controls.L1, 
+				controls.U1, 
+				controls.R1, 
+				controls.L2, 
+				controls.D1, 
+				controls.R2
+			];
+			pressArray = [						
+				controls.L1_P,
+				controls.U1_P,
+				controls.R1_P,
+				controls.L2_P,
+				controls.D1_P,
+				controls.R2_P
+			];
+			releaseArray = [						
+				controls.L1_R,
+				controls.U1_R,
+				controls.R1_R,
+				controls.L2_R,
+				controls.D1_R,
+				controls.R2_R
+			];
+		}
+		else if (mania == 2)
+		{
+			holdArray = [
+				controls.N0,
+				controls.N1, 
+				controls.N2, 
+				controls.N3, 
+				controls.N4, 
+				controls.N5, 
+				controls.N6, 
+				controls.N7, 
+				controls.N8
+			];
+			pressArray = [
+				controls.N0_P,
+				controls.N1_P,
+				controls.N2_P,
+				controls.N3_P,
+				controls.N4_P,
+				controls.N5_P,
+				controls.N6_P,
+				controls.N7_P,
+				controls.N8_P
+			];
+			releaseArray = [						
+				controls.N0_R,
+				controls.N1_R,
+				controls.N2_R,
+				controls.N3_R,
+				controls.N4_R,
+				controls.N5_R,
+				controls.N6_R,
+				controls.N7_R,
+				controls.N8_R
+			];
+		}
+
 	    var up = controls.UP;
 		var right = controls.RIGHT;
 		var down = controls.DOWN;
@@ -4156,7 +4289,7 @@ class PlayState extends MusicBeatState
 		var n7R = controls.N7_R;
 		var n8R = controls.N8_R;
 
-		var ex1 = false;
+		//var ex1 = false; //this doesnt do anything
 
 		var controlArray:Array<Bool>;
 
@@ -4186,9 +4319,8 @@ class PlayState extends MusicBeatState
 
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.isSustainNote && daNote.finishedGenerating)
+				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.isSustainNote)
 				{
-
 					possibleNotes.push(daNote);
 				}
 			});
@@ -4511,6 +4643,11 @@ class PlayState extends MusicBeatState
 					}
 				}
 
+				/*if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+					spr.playAnim('pressed');
+				if (!holdArray[spr.ID])
+					spr.playAnim('static');*/
+
 				/* if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school') && (SONG.song.toLowerCase() != 'disability'))
 				{
 					spr.centerOffsets();
@@ -4681,9 +4818,9 @@ class PlayState extends MusicBeatState
 		}
 		else if (!theFunne)
 		{
-			if(FlxG.save.data.immortal)
-				health =/*well well well*/ 0;
-			else
+			/*if(FlxG.save.data.immortal)
+				health +=/*well well well*/ /*0;
+			else*/
 				badNoteCheck(note);
 		}
 	}

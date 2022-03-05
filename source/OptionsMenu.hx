@@ -1,5 +1,6 @@
 package;
 
+import Options;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import Controls.KeyboardScheme;
@@ -20,22 +21,33 @@ import Discord.DiscordClient;
 
 class OptionsMenu extends MusicBeatState
 {
+	public static var instance:OptionsMenu;
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
-	var controlsStrings:Array<String> = [];
+	var options:Array<Option> = [
+		new DFJKOption(controls),
+		new GhostTappingOption(),
+		new DownscrollOption(),
+		new AccuracyOption(),
+		new EyesoresOption(),
+		new NoteClickOption(),
+		new FreeplayCutscenesOption(),
+		new InmortalOption(),
+		new ModchartOption()
+	];
+
+	public var acceptInput:Bool = true;
 
 	private var grpControls:FlxTypedGroup<Alphabet>;
 	var versionShit:FlxText;
 	override function create()
 	{
+		instance = this;
 		#if desktop
 		DiscordClient.changePresence("In the Options Menu", null);
 		#end
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('backgrounds/SUSSUS AMOGUS'));
-		controlsStrings = CoolUtil.coolStringFile((FlxG.save.data.dfjk ? 'DFJK' : 'WASD') + "\n" + (FlxG.save.data.newInput ? "Ghost Tapping" : "No Ghost Tapping") + "\n" + (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll') + "\nAccuracy " + (FlxG.save.data.accuracyDisplay ? "off" : "on") + "\n" + (FlxG.save.data.eyesores ? 'Eyesores Enabled' : 'Eyesores Disabled') + "\n" + (FlxG.save.data.donoteclick ? "Hitsounds On" : "Hitsounds Off") + "\n" + (FlxG.save.data.freeplayCuts ? "Freeplay Cutscenes On" : "Freeplay Cutscenes Off") + "\n" + (FlxG.save.data.immortal ? "Inmortal" : "Mortal"));
-		
-		trace(controlsStrings);
 
 		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -48,9 +60,9 @@ class OptionsMenu extends MusicBeatState
 		grpControls = new FlxTypedGroup<Alphabet>();
 		add(grpControls);
 
-		for (i in 0...controlsStrings.length)
+		for (i in 0...options.length)
 		{
-				var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, controlsStrings[i], true, false);
+				var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30,options[i].getDisplay(), true, false);
 				controlLabel.isMenuItem = true;
 				controlLabel.targetY = i;
 				grpControls.add(controlLabel);
@@ -70,6 +82,8 @@ class OptionsMenu extends MusicBeatState
 	{
 		super.update(elapsed);
 
+		if (acceptInput)
+		{
 			if (controls.BACK)
 				FlxG.switchState(new MainMenuState());
 			if (controls.UP_P)
@@ -90,7 +104,7 @@ class OptionsMenu extends MusicBeatState
 				}
 	
 
-			if (controls.ACCEPT)
+			/*if (controls.ACCEPT)
 			{
 				grpControls.remove(grpControls.members[curSelected]);
 				switch(curSelected)
@@ -147,9 +161,21 @@ class OptionsMenu extends MusicBeatState
 						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.immortal ? "Inmortal" : "Mortal"), true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 7;
-						grpControls.add(ctrl);						
+						grpControls.add(ctrl);
+					case 8:
+						FlxG.openSubState(new KeyBindMenu());			
+				}
+			}*/
+			if (controls.ACCEPT)
+			{
+				if (options[curSelected].press()) {
+					grpControls.remove(grpControls.members[curSelected]);
+					var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, options[curSelected].getDisplay(), true, false);
+					ctrl.isMenuItem = true;
+					grpControls.add(ctrl);
 				}
 			}
+		}
 	}
 
 	var isSettingControl:Bool = false;

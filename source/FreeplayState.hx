@@ -44,6 +44,7 @@ class FreeplayState extends MusicBeatState
 	private var AllPossibleSongs:Array<String> = ["Dave", "Joke", "Extra", 'Base', 'Extended'];
 
 	var moreDifficultySongs:Array<String> = ["House", "Insanity", "Polygonized", "Bonus-Song", "Furiosity", "Very-Screwed"]; //SEXERT
+	var singleDifficultySongs:Array<String> = ["Splitathon", "Phonophobia", "Thearchy", "Scopomania"];
 
 	var deezonediff:Array<String> = ['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia', 'Torture'];
 
@@ -122,7 +123,7 @@ class FreeplayState extends MusicBeatState
 				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia'], 2, ['face']);
 			case 'extended':
 				addWeek(['Disruption', 'Applecore', 'Very-Screwed'], 2, ['bambi-piss-3d', 'bandu', 'bambi-angey']);
-				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia', 'Green', 'Torture'], 2, ['GREEN','face','GREEN','face','face','GREEN','bambi-unfair']);
+				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia', 'Green', 'Torture', 'Septuagint'], 69/*haha so funny*/, ['GREEN','face','GREEN','face','face','GREEN','bambi-unfair', 'bambi-remake']);
 		}
 	}
 
@@ -314,7 +315,7 @@ class FreeplayState extends MusicBeatState
 				curDifficulty = 0;
 		}
 
-		if (songs[curSelected].week == 3)
+		if (singleDifficultySongs.contains(songs[curSelected].songName))
 		{
 			curDifficulty = 1;
 		}
@@ -427,7 +428,23 @@ class FreeplayState extends MusicBeatState
 				item.alpha = 1;
 			}
 		}
-		FlxTween.color(bg, 0.25, bg.color, songColors[songs[curSelected].week]);
+		switch (songs[curSelected].songName)
+		{
+		    case "Green":
+			     FlxTween.color(bg, 0.75, bg.color, 0xFF00FF00);
+			case "Scopomania":
+			     FlxTween.color(bg, 0.75, bg.color, 0xFF64302D);
+			case "Thearchy":
+			     FlxTween.color(bg, 0.75, bg.color, 0xFFE6E6E6);
+			case "Hellbreaker":
+			     FlxTween.color(bg, 0.625, bg.color, 0xFF3C3C3C);
+			case "Phonophobia":
+			     FlxTween.color(bg, 0.5, bg.color, 0xFFE6E6E6);
+			case "Opposition":
+			     FlxTween.color(bg, 0.5, bg.color, 0xFF0000C8);
+		    default:
+		        FlxTween.color(bg, 0.25, bg.color, songColors[songs[curSelected].week]);
+		}
 	}
 }
 

@@ -264,14 +264,14 @@ class ChartingState extends MusicBeatState
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
 
-		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+		var player1DropDown = new FlxUIDropDownMenu(-770, -100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.player1 = characters[Std.parseInt(character)];
 		});
 		player1DropDown.selectedLabel = _song.player1;
 		player1DropDown.dropDirection = FlxUIDropDownMenuDropDirection.Down;
 
-		var player2DropDown = new FlxUIDropDownMenu(140, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+		var player2DropDown = new FlxUIDropDownMenu(-640, -100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.player2 = characters[Std.parseInt(character)];
 		});
@@ -1131,7 +1131,7 @@ class ChartingState extends MusicBeatState
 		for (i in _song.notes[curSection].sectionNotes)
 		{
 		
-			if (i[0] == note.strumTime + (note.strumTime == 0 ? 0 : 1) && i[1] % (keyAmmo[_song.mania]) == note.noteData)
+			if (i[0] == note.strumTime && i[1] % (keyAmmo[_song.mania]) == note.noteData)
 			{
 				FlxG.log.add('FOUND EVIL NUMBER');
 				trace('FOUND EVIL NUMBER');

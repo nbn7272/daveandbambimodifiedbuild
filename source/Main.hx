@@ -96,11 +96,11 @@
 
 			#if !mobile
 			fpsFuckerIMeanCounterJeezus = new FPS(10, 3, 0xFFFFFF);
-			fpsFuckerIMeanCounterJeezus.defaultTextFormat = new TextFormat("Comic Sans MS Bold", 8, 0xFFFFFF, true);
+			fpsFuckerIMeanCounterJeezus.defaultTextFormat = new TextFormat("Comic Sans MS Bold", 12, 0xFFFFFF, true);
 			addChild(fpsFuckerIMeanCounterJeezus);
 		
 			memoryCounter = new MemoryCounter(10, 3, 0xffffff);
-			memoryCounter.defaultTextFormat = new TextFormat("Comic Sans MS Bold", 8, 0xFFFFFF, true);
+			memoryCounter.defaultTextFormat = new TextFormat("Comic Sans MS Bold", 12, 0xFFFFFF, true);
 			addChild(memoryCounter);
 			#end
 		}
