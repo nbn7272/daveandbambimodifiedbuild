@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="OppositonExpunged.png">
+	<SubTexture name="expunge me already" x="1612" y="20" width="772" height="826" frameX="0" frameY="0" frameWidth="798" frameHeight="744"/>
+</TextureAtlas>

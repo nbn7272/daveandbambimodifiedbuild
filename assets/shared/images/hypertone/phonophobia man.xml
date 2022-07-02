@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Unfairness.png">
+	<!-- XML Created by jamsybob -->
+	<!-- sussy -->
+	<SubTexture name="phonophobia right0000" x="0" y="0" width="500" height="705"/> <!-- he's right -->
+	<SubTexture name="phonophobia right0001" x="685" y="0" width="500" height="705"/>
+	<SubTexture name="phonophobia right0002" x="1232" y="0" width="500" height="705"/>
+	<SubTexture name="phonophobia right0003" x="1232" y="0" width="500" height="716"/>
+	<SubTexture name="phonophobia idle0000" x="0" y="737" width="500" height="716"/>
+	<SubTexture name="phonophobia left0000" x="2508" y="95" width="500" height="705"/> <!-- hes left -->
+	<SubTexture name="phonophobia left0001" x="3088" y="77" width="500" height="705"/>
+	<SubTexture name="phonophobia left0002" x="601" y="725" width="500" height="705"/>
+	<SubTexture name="phonophobia left0003" x="1193" y="743" width="500" height="716"/>
+	<SubTexture name="phonophobia up0000" x="1860" y="760" width="500" height="716"/>
+	<SubTexture name="phonophobia up0001" x="2550" y="760" width="500" height="716"/>
+	<SubTexture name="phonophobia up0002" x="3163" y="760" width="500" height="716"/>
+	<SubTexture name="phonophobia up0003" x="3729" y="760" width="500" height="716"/>
+	<SubTexture name="phonophobia down0000" x="3768" y="63" width="500" height="716"/>
+	<SubTexture name="phonophobia down0001" x="4437" y="63" width="500" height="716"/>
+	<SubTexture name="phonophobia down0002" x="4398" y="782" width="500" height="716"/>
+	<SubTexture name="phonophobia down0003" x="4332" y="1573" width="500" height="716"/>
+</TextureAtlas>
