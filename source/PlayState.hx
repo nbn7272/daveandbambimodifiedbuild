@@ -3935,6 +3935,9 @@ class PlayState extends MusicBeatState
 							    if (health > healthtolower) health -= healthtolower;
 							case 'unfairness' | 'unfairness-high-pitched' | 'torture':
 								health -= (healthtolower / 1.75);
+							case 'leave-this-place':
+							    if (health > 0.02)
+								  health -= 0.022;
 					}
 					// boyfriend.playAnim('hit',true);
 					dad.holdTimer = 0;
