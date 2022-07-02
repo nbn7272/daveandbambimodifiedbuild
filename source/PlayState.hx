@@ -135,7 +135,7 @@ class PlayState extends MusicBeatState
 
 	public var funneLetters:Array<String> = ['amogus', 'amogus 2'];
 
-	var funnyFloatyBoys:Array<String> = ['dave-angey', 'bambi-3d', 'dave-annoyed-3d', 'dave-3d-standing-bruh-what', 'bambi-unfair', 'bambi-helium', 'unfair-helium', 'SEAL', 'bambi-phono', 'hell', 'hell remaster', 'OPPOSITION', 'thearchy', 'GREEN', 'septuagint', 'cryo dave', 'evacuate this premises'];
+	var funnyFloatyBoys:Array<String> = ['dave-angey', 'bambi-3d', 'dave-annoyed-3d', 'dave-3d-standing-bruh-what', 'bambi-unfair', 'bambi-helium', 'unfair-helium', 'SEAL', 'bambi-phono', 'hell', 'hell remaster', 'OPPOSITION', 'thearchy', 'GREEN', 'septuagint', 'cryo dave', 'evacuate this premises', 'real break'];
 	var funnyFloatyBoys2:Array<String> = ['dave-corrupt', 'dave-corrupt-2', 'dave-corrupt-3', 'dave-corrupt-4', 'dave-corrupt-5', 'dave-corrupt-6', 'dave-corrupt-7'];
 	var funnyFloatyAppleCore:Array<String> = ['bandu', 'bambi-piss-3d', 'unfair-junker']; //junk 1
 
@@ -624,6 +624,8 @@ class PlayState extends MusicBeatState
 				gf.visible = false;
 				boyfriend.x += 600;
 				dad.y -= 1000;
+			case 'real break':
+			    dad.x -= 200;
 		}
 		
 		dadmirror.y += 0;
@@ -909,7 +911,7 @@ class PlayState extends MusicBeatState
 			    preload('dave/bambi_angy2');
 			    preload('dave/bambi_angy3');
 			case 'reality-breaking':
-			    preload('bambi/unfair_bambi');
+			    preload('bambi/reality breaker');
 			case 'apple-core':
 			    preload('bandu/minion');
 		}
@@ -4412,7 +4414,7 @@ class PlayState extends MusicBeatState
 			{
 				case 'dave-angey' | 'dave-annoyed-3d' | 'dave-3d-standing-bruh-what':
 					camFollow.y = dad.getMidpoint().y;
-				case 'evacuate this premises':
+				case 'evacuate this premises' | 'real break':
 					camFollow.y = dad.getMidpoint().y;
 					camFollow.x = dad.getMidpoint().x - 64;
 				case 'bandu':
@@ -6001,21 +6003,14 @@ class PlayState extends MusicBeatState
 				{
 				 case 1024:
 				     remove(dad);
-					 dad = new Character(100, 200, 'bambi-unfair');
+					 dad = new Character(-100, -200, 'real break');
 					 add(dad);
-					 SONG.player2 = "bambi-unfair";
+					 SONG.player2 = "real break";
 					 bruh1.visible = true;
-					 dadStrums.members[0].alpha = 0;
-				     dadStrums.members[1].alpha = 0;
-				     dadStrums.members[2].alpha = 0;//don't want to write a for each statement rn so eh
-				     dadStrums.members[3].alpha = 0;
-				     spriteExtraStrums.members[0].alpha = 1;
-				     spriteExtraStrums.members[1].alpha = 1;
-				     spriteExtraStrums.members[2].alpha = 1;
-				     spriteExtraStrums.members[3].alpha = 1;
+					 iconP2.animation.play("real break", true);
 				case 1536:
 				     remove(dad);
-					 dad = new Character(200, 550, 'bambi-angey');
+					 //dad = new Character(200, 550, 'bambi-angey');
 					 add(dad);
 					 SONG.player2 = "bambi-angey";
 					 bruh1.visible = false;
