@@ -90,9 +90,10 @@ class Paths
 		return 'songs:assets/songs/${song.toLowerCase()}/Voices.$SOUND_EXT';
 	}
 
-	inline static public function inst(song:String)
+	inline static public function inst(song:String, ?bside:Bool = false)
 	{
-		return 'songs:assets/songs/${song.toLowerCase()}/Inst.$SOUND_EXT';
+		if (!bside) return 'songs:assets/songs/${song.toLowerCase()}/Inst.$SOUND_EXT';
+		else return 'songs:assets/songs/${song.toLowerCase()}/bside.$SOUND_EXT';
 	}
 
 	inline static public function externmusic(song:String)

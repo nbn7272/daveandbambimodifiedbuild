@@ -73,6 +73,12 @@ class HealthIcon extends FlxSprite
 		animation.add('thearchy', [55, 55], 0, false, isPlayer);
 		animation.add('GREEN', [55, 56], 0, false, isPlayer);
 		animation.add('scopomania', [57, 57], 0, false, isPlayer);
+		animation.add('septuagint', [64, 65], 0, false, isPlayer);
+		animation.add('terminatizing', [66, 66], 0, false, isPlayer);
+		animation.add('conbi', [67, 68], 0, false, isPlayer);
+		animation.add('breaker of universes', [69, 69], 0, false, isPlayer);// NICE NUMBER WOOOOOO
+		animation.add('hell remaster', [70, 70], 0, false, isPlayer);
+		animation.add('evacuate this premises', [71, 72], 0, false, isPlayer);
 
 		animation.add('tristan', [14, 15], 0, false, isPlayer);
 		animation.add('tristan-golden', [22, 23], 0, false, isPlayer);

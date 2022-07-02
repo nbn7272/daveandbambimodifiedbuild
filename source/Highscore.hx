@@ -85,14 +85,30 @@ class Highscore
 	{
 		var daSong:String = song;
 
-		if (diff == 0)
+		switch (diff)
+		{
+		    case 0:
+			    daSong += '-easy';//easier to read
+			case 2:
+			    if (song != "green") daSong += '-hard';
+				else daSong += '-insane';
+			case 3:
+			    if (song == "unfairness") daSong += '-bside';
+				else if (song == "very-screwed") daSong += '-extreme';
+				else daSong += '-unnerf';
+		}
+		/*if (diff == 0)
 			daSong += '-easy';
-		else if (diff == 2)
+		else if (diff == 2 && song != "green")
 			daSong += '-hard';
+		else if (diff == 2 && song == "green")
+			daSong += '-insane';
+		else if (diff == 3 && song == "unfairness")
+			daSong += '-extreme';
 		else if (diff == 3 && song != "very-screwed")
 			daSong += '-unnerf';
 		else if (diff == 3 && song == "very-screwed")
-			daSong += '-extreme';
+			daSong += '-extreme';*/
 
 		return daSong;
 	}

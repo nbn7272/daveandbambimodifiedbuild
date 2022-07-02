@@ -26,10 +26,14 @@ class Note extends FlxSprite
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
 	public var coolBot:Bool = false;
+	public var badNote:Bool = false;
 	public var mania:Int = 0;
 	public var isAlive:Bool = true;
 	public var isAlt:Bool = false;
+	public var is3d:Bool = false;
+	public var funne:Bool = false;
 	public var prevNote:Note;
+	public var thisNote:Note;
 	public var LocalScrollSpeed:Float = 1;
 	public var resetAnim:Float = 0;
 
@@ -39,7 +43,10 @@ class Note extends FlxSprite
 
 	public var noteScore:Float = 1;
 
+	public var direction:Int = 0;
+
 	public static var swagWidth:Float;
+	public var swagWidthThing:Float;
 	public static var noteScale:Float;
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
@@ -52,28 +59,38 @@ class Note extends FlxSprite
 
 	private var InPlayState:Bool = false;
 
-	public static var CharactersWith3D:Array<String> = ["dave-angey", "bambi-3d", 'dave-annoyed-3d', 'dave-3d-standing-bruh-what', 'bambi-unfair', 'bambi-helium', 'unfair-helium', 'SEAL', 'bambi-phono', 'hell', 'OPPOSITION', 'thearchy', 'GREEN', 'scopomania', 'bambi-piss-3d', 'bandu', 'unfair-junker'];
+	public static var CharactersWith3D:Array<String> = ["dave-angey", "bambi-3d", 'dave-annoyed-3d', 'dave-3d-standing-bruh-what', 'bambi-unfair', 'bambi-helium', 'unfair-helium', 'SEAL', 'bambi-phono', 'hell', 'hell remaster', 'OPPOSITION', 'thearchy', 'GREEN', 'scopomania', 'bambi-piss-3d', 'bandu', 'unfair-junker', 'septuagint', 'cryo dave', 'terminatizing', 'bamber-angy', 'conbi', 'breaker of universes'];
 	
-	public static var scales:Array<Float> = [0.7, 0.6, 0.46];
+	public static var scales:Array<Float> = [0.7, 0.6, 0.46, 0.3];
 
 	public var rating:String = "shit";
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?musthit:Bool = true, noteStyle:String = "normal") //had to add a new variable to this because FNF dumb
 	{
 	    swagWidth = 160 * 0.7; 
+		swagWidthThing = 160 * 0.7; 
 		noteScale = 0.7;
 	    mania = 0;
 		if (PlayState.SONG.mania == 1)
 		{
 			swagWidth = 120 * 0.7;
+			swagWidthThing = 120 * 0.7;
 			noteScale = 0.6;
 			mania = 1;
 		}
 		else if (PlayState.SONG.mania == 2)
 		{
 			swagWidth = 90 * 0.7;
+			swagWidthThing = 90 * 0.7;
 			noteScale = 0.46;
 			mania = 2;
+		}
+		else if (PlayState.SONG.mania == 3)
+		{
+			swagWidth = 60 * 0.7;
+			swagWidthThing = 60 * 0.7;
+			noteScale = 0.3;
+			mania = 3;
 		}
 		super();
 
@@ -99,153 +116,98 @@ class Note extends FlxSprite
 			    noteType = 0;
 			case "phone":
 			    noteType = 1; //here you can see which one which and uses number (int) because yes
+				badNote = true;
 			case "corn":
 			    noteType = 2;
+			case "delirium":
+			    noteType = 3;
 		}
-
+		if (noteType == 1)
+		{
+		badNote = true;
+		}
+		Main.noteCount += 1;
 		var daStage:String = PlayState.curStage;
-		if ((CharactersWith3D.contains(PlayState.SONG.player2) && !musthit) || ((CharactersWith3D.contains(PlayState.SONG.player1) && musthit)) || ((CharactersWith3D.contains(PlayState.SONG.player2) || CharactersWith3D.contains(PlayState.SONG.player1)) && (this.strumTime / 50) % 20 > 10))
-		{
-				frames = Paths.getSparrowAtlas('NOTE_assets_3D');
+		
+			frames = Paths.getSparrowAtlas('NOTE_assets_MAIN');
+			//3d notes
+			animation.addByPrefix('greenScroll3d', 'green3d');
+			animation.addByPrefix('redScroll3d', 'red3d');
+			animation.addByPrefix('blueScroll3d', 'blue3d');
+			animation.addByPrefix('purpleScroll3d', 'purple3d');
+			animation.addByPrefix('whiteScroll3d', 'white3d');
+			animation.addByPrefix('yellowScroll3d', 'yellow3d');
+			animation.addByPrefix('violetScroll3d', 'violet3d');
+			animation.addByPrefix('blackScroll3d', 'black3d');
+			animation.addByPrefix('darkScroll3d', 'dark3d');
 
-				animation.addByPrefix('greenScroll', 'green0');
-				animation.addByPrefix('redScroll', 'red0');
-				animation.addByPrefix('blueScroll', 'blue0');
-				animation.addByPrefix('purpleScroll', 'purple0');
-				animation.addByPrefix('whiteScroll', 'white0');
-				animation.addByPrefix('yellowScroll', 'yellow0');
-				animation.addByPrefix('violetScroll', 'violet0');
-				animation.addByPrefix('blackScroll', 'black0');
-				animation.addByPrefix('darkScroll', 'dark0');
+			animation.addByPrefix('purpleholdend3d', 'pruple end hold3d');
+			animation.addByPrefix('greenholdend3d', 'green hold end3d');
+			animation.addByPrefix('redholdend3d', 'red hold end3d');
+			animation.addByPrefix('blueholdend3d', 'blue hold end3d');
+			animation.addByPrefix('whiteholdend3d', 'white hold end3d');
+			animation.addByPrefix('yellowholdend3d', 'yellow hold end3d');
+			animation.addByPrefix('violetholdend3d', 'violet hold end3d');
+			animation.addByPrefix('blackholdend3d', 'black hold end3d');
+			animation.addByPrefix('darkholdend3d', 'dark hold end3d');
 
+			animation.addByPrefix('purplehold3d', 'purple hold piece3d');
+			animation.addByPrefix('greenhold3d', 'green hold piece3d');
+			animation.addByPrefix('redhold3d', 'red hold piece3d');
+			animation.addByPrefix('bluehold3d', 'blue hold piece3d');
+			animation.addByPrefix('whitehold3d', 'white hold piece3d');
+			animation.addByPrefix('yellowhold3d', 'yellow hold piece3d');
+			animation.addByPrefix('violethold3d', 'violet hold piece3d');
+			animation.addByPrefix('blackhold3d', 'black hold piece3d');
+			animation.addByPrefix('darkhold3d', 'dark hold piece3d3d');
 
-				animation.addByPrefix('purpleholdend', 'pruple end hold');
-				animation.addByPrefix('greenholdend', 'green hold end');
-				animation.addByPrefix('redholdend', 'red hold end');
-				animation.addByPrefix('blueholdend', 'blue hold end');
-				animation.addByPrefix('whiteholdend', 'white hold end');
-				animation.addByPrefix('yellowholdend', 'yellow hold end');
-				animation.addByPrefix('violetholdend', 'violet hold end');
-				animation.addByPrefix('blackholdend', 'black hold end');
-				animation.addByPrefix('darkholdend', 'dark hold end');
+			animation.addByPrefix('phone3d', 'phone3d');
+			animation.addByPrefix('corn3d', 'corn3d');
 
-				animation.addByPrefix('purplehold', 'purple hold piece');
-				animation.addByPrefix('greenhold', 'green hold piece');
-				animation.addByPrefix('redhold', 'red hold piece');
-				animation.addByPrefix('bluehold', 'blue hold piece');
-				animation.addByPrefix('whitehold', 'white hold piece');
-				animation.addByPrefix('yellowhold', 'yellow hold piece');
-				animation.addByPrefix('violethold', 'violet hold piece');
-				animation.addByPrefix('blackhold', 'black hold piece');
-				animation.addByPrefix('darkhold', 'dark hold piece');
+			//2d notes
+			animation.addByPrefix('greenScroll', 'green0');
+			animation.addByPrefix('redScroll', 'red0');
+			animation.addByPrefix('blueScroll', 'blue0');
+			animation.addByPrefix('purpleScroll', 'purple0');
+			animation.addByPrefix('whiteScroll', 'white0');
+			animation.addByPrefix('yellowScroll', 'yellow0');
+			animation.addByPrefix('violetScroll', 'violet0');
+			animation.addByPrefix('blackScroll', 'black0');
+			animation.addByPrefix('darkScroll', 'dark0');
 
-				animation.addByPrefix('phone', 'phone');
-				animation.addByPrefix('corn', 'corn');
+			animation.addByPrefix('purpleholdend', 'pruple end hold');
+			animation.addByPrefix('greenholdend', 'green hold end');
+			animation.addByPrefix('redholdend', 'red hold end');
+			animation.addByPrefix('blueholdend', 'blue hold end');
+			animation.addByPrefix('whiteholdend', 'white hold end');
+			animation.addByPrefix('yellowholdend', 'yellow hold end');
+			animation.addByPrefix('violetholdend', 'violet hold end');
+			animation.addByPrefix('blackholdend', 'black hold end');
+			animation.addByPrefix('darkholdend', 'dark hold end');
 
-				if (noteStyle == "phone" || noteType == 1)
-				{
-				frames = Paths.getSparrowAtlas('NOTE_phone');
-				animation.addByPrefix('phonegreenScroll', 'green0');
-				animation.addByPrefix('phoneredScroll', 'red0');
-				animation.addByPrefix('phoneblueScroll', 'blue0');
-				animation.addByPrefix('phonepurpleScroll', 'purple0');
+			animation.addByPrefix('purplehold', 'purple hold piece');
+			animation.addByPrefix('greenhold', 'green hold piece');
+			animation.addByPrefix('redhold', 'red hold piece');
+			animation.addByPrefix('bluehold', 'blue hold piece');
+			animation.addByPrefix('whitehold', 'white hold piece');
+			animation.addByPrefix('yellowhold', 'yellow hold piece');
+			animation.addByPrefix('violethold', 'violet hold piece');
+			animation.addByPrefix('blackhold', 'black hold piece');
+			animation.addByPrefix('darkhold', 'dark hold piece');
 
-				animation.addByPrefix('phonepurplehold', 'purple hold piece');
-				animation.addByPrefix('phonegreenhold', 'green hold piece');
-				animation.addByPrefix('phoneredhold', 'red hold piece');
-				animation.addByPrefix('phonebluehold', 'blue hold piece');
+			animation.addByPrefix('phone', 'phone');
+			animation.addByPrefix('corn', 'corn');
 
-				animation.addByPrefix('phonepurpleholdend', 'pruple end hold');
-				animation.addByPrefix('phonegreenholdend', 'green hold end');
-				animation.addByPrefix('phoneredholdend', 'red hold end');
-				animation.addByPrefix('phoneblueholdend', 'blue hold end');
-				}
-				if (noteStyle == "corn" || noteType == 2)
-				{
-				frames = Paths.getSparrowAtlas('NOTE_corn');
-				animation.addByPrefix('cornScroll', 'green0');
+			setGraphicSize(Std.int(width * noteScale));
+			updateHitbox();
+			antialiasing = true;
 
-				animation.addByPrefix('cornhold', 'green hold piece');
-
-				animation.addByPrefix('cornholdend', 'green hold end');
-				}
-				setGraphicSize(Std.int(width * noteScale));
-				updateHitbox();
-				antialiasing = true;
-		}
-		else
-		{
-				frames = Paths.getSparrowAtlas('NOTE_assets');
-
-				animation.addByPrefix('greenScroll', 'green0');
-				animation.addByPrefix('redScroll', 'red0');
-				animation.addByPrefix('blueScroll', 'blue0');
-				animation.addByPrefix('purpleScroll', 'purple0');
-				animation.addByPrefix('whiteScroll', 'white0');
-				animation.addByPrefix('yellowScroll', 'yellow0');
-				animation.addByPrefix('violetScroll', 'violet0');
-				animation.addByPrefix('blackScroll', 'black0');
-				animation.addByPrefix('darkScroll', 'dark0');
-
-
-				animation.addByPrefix('purpleholdend', 'pruple end hold');
-				animation.addByPrefix('greenholdend', 'green hold end');
-				animation.addByPrefix('redholdend', 'red hold end');
-				animation.addByPrefix('blueholdend', 'blue hold end');
-				animation.addByPrefix('whiteholdend', 'white hold end');
-				animation.addByPrefix('yellowholdend', 'yellow hold end');
-				animation.addByPrefix('violetholdend', 'violet hold end');
-				animation.addByPrefix('blackholdend', 'black hold end');
-				animation.addByPrefix('darkholdend', 'dark hold end');
-
-				animation.addByPrefix('purplehold', 'purple hold piece');
-				animation.addByPrefix('greenhold', 'green hold piece');
-				animation.addByPrefix('redhold', 'red hold piece');
-				animation.addByPrefix('bluehold', 'blue hold piece');
-				animation.addByPrefix('whitehold', 'white hold piece');
-				animation.addByPrefix('yellowhold', 'yellow hold piece');
-				animation.addByPrefix('violethold', 'violet hold piece');
-				animation.addByPrefix('blackhold', 'black hold piece');
-				animation.addByPrefix('darkhold', 'dark hold piece');
-
-				animation.addByPrefix('phone', 'phone');
-				animation.addByPrefix('corn', 'corn');
-
-				if (noteStyle == "phone" || noteType == 1)
-				{
-				frames = Paths.getSparrowAtlas('NOTE_phone');
-				animation.addByPrefix('phonegreenScroll', 'green0');
-				animation.addByPrefix('phoneredScroll', 'red0');
-				animation.addByPrefix('phoneblueScroll', 'blue0');
-				animation.addByPrefix('phonepurpleScroll', 'purple0');
-
-				animation.addByPrefix('phonepurplehold', 'purple hold piece');
-				animation.addByPrefix('phonegreenhold', 'green hold piece');
-				animation.addByPrefix('phoneredhold', 'red hold piece');
-				animation.addByPrefix('phonebluehold', 'blue hold piece');
-
-				animation.addByPrefix('phonepurpleholdend', 'pruple end hold');
-				animation.addByPrefix('phonegreenholdend', 'green hold end');
-				animation.addByPrefix('phoneredholdend', 'red hold end');
-				animation.addByPrefix('phoneblueholdend', 'blue hold end');
-				}
-				if (noteStyle == "corn" || noteType == 2)
-				{
-				frames = Paths.getSparrowAtlas('NOTE_corn');
-				animation.addByPrefix('cornScroll', 'green0');
-
-				animation.addByPrefix('cornhold', 'green hold piece');
-
-				animation.addByPrefix('cornholdend', 'green hold end');
-				}
-				setGraphicSize(Std.int(width * noteScale));
-				updateHitbox();
-				antialiasing = true;
-		}
-		noteStyle = this.noteStyle;
+		this.noteStyle = noteStyle;
+		thisNote = this;
 		var frameN:Array<String> = ['purple', 'blue', 'green', 'red'];
 		if (mania == 1) frameN = ['purple', 'green', 'red', 'yellow', 'blue', 'dark'];
 		else if (mania == 2) frameN = ['purple', 'blue', 'green', 'red', 'white', 'yellow', 'violet', 'black', 'dark'];
+		else if (mania == 3) frameN = ['purple', 'green', 'red', 'yellow', 'blue', 'dark', 'purple', 'green', 'red', 'yellow', 'blue', 'dark'];
 
 		x += swagWidth * noteData;
 		animation.play(frameN[noteData] + 'Scroll');
@@ -292,7 +254,6 @@ class Note extends FlxSprite
 							if (spr.ID == notetolookfor)
 							{
 									x = spr.x;
-									angle = spr.angle;
 									MyStrum = spr;
 								}
 							});
@@ -304,7 +265,6 @@ class Note extends FlxSprite
 							if (spr.ID == notetolookfor)
 							{
 								x = spr.x;
-								angle = spr.angle;
 								MyStrum = spr;
 							}
 						});
@@ -316,7 +276,6 @@ class Note extends FlxSprite
 							if (spr.ID == notetolookfor)
 							{
 									x = spr.x;
-									angle = spr.angle;
 									MyStrum = spr;
 								}
 							});
@@ -358,9 +317,16 @@ class Note extends FlxSprite
 		if (FlxG.save.data.downscroll && sustainNote) 
 			flipY = true;
 
-		if (isSustainNote && prevNote != null)
+
+		if (!mustPress && CharactersWith3D.contains(PlayState.SONG.player2)) is3d = true;
+		else is3d = false;
+
+		if (mustPress && ((PlayState.formoverride != "bf") ? CharactersWith3D.contains(PlayState.formoverride) : CharactersWith3D.contains(PlayState.SONG.player1))) is3d = true;
+		else is3d = false;
+		
+		if (isSustainNote && prevNote != null && !is3d)
 		{
-			noteScore * 0.2;
+		    noteScore * 0.2;
 			alpha = 0.6;
 
 			x += width / 2;
@@ -376,13 +342,12 @@ class Note extends FlxSprite
 				case 0:
 					animation.play('purpleholdend');
 			}
-
+			
 			updateHitbox();
 
 			x -= width / 2;
 
 			animation.play(frameN[noteData] + 'holdend');
-			if (noteStyle == "corn") animation.play('cornholdend');
 
 			if (PlayState.curStage.startsWith('school'))
 				x += 30;
@@ -390,8 +355,60 @@ class Note extends FlxSprite
 			if (prevNote.isSustainNote)
 			{
 				prevNote.animation.play(frameN[prevNote.noteData] + 'hold');
-				if (noteStyle == "corn") prevNote.animation.play("cornhold");
+				//if (noteStyle == "corn") prevNote.animation.play("cornhold");
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.8 * PlayState.SONG.speed;
+				prevNote.updateHitbox();
+				// prevNote.setGraphicSize();
+			}
+		}
+
+		if (isSustainNote && prevNote != null && is3d)
+		{
+		    noteScore * 0.2;
+			alpha = 0.6;
+
+			x += width / 2;
+
+			if (mania == 3)
+			{
+			switch (noteData)
+			{
+				case 2:
+					animation.play('greenholdend3d');
+				case 3:
+					animation.play('redholdend3d');
+				case 1:
+					animation.play('greenholdend3d');
+				case 0:
+					animation.play('purpleholdend3d');
+				case 4:
+				    
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+			}
+			}
+			
+			updateHitbox();
+
+			x -= width / 2;
+
+			animation.play(frameN[noteData] + 'holdend3d');
+			//if (noteStyle == "corn") animation.play('cornholdend3d');
+
+			if (PlayState.curStage.startsWith('school'))
+				x += 30;
+
+			if (prevNote.isSustainNote)
+			{
+				prevNote.animation.play(frameN[prevNote.noteData] + 'hold3d');
+				//if (noteStyle == "corn") prevNote.animation.play("cornhold3d");
+				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.8 * PlayState.SONG.speed;
+				//trace(prevNote.scale.y);
 				prevNote.updateHitbox();
 				// prevNote.setGraphicSize();
 			}
@@ -400,14 +417,49 @@ class Note extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+	    is3d = false;
+	    var frameN:Array<String> = ['purple', 'blue', 'green', 'red'];
+		if (mania == 1) frameN = ['purple', 'green', 'red', 'yellow', 'blue', 'dark'];
+		else if (mania == 2) frameN = ['purple', 'blue', 'green', 'red', 'white', 'yellow', 'violet', 'black', 'dark'];
+		else if (mania == 3) frameN = ['purple', 'green', 'red', 'yellow', 'blue', 'dark', 'purple', 'green', 'red', 'yellow', 'blue', 'dark'];
+
+	    if (!mustPress && CharactersWith3D.contains(PlayState.SONG.player2)) is3d = true;
+		if (mustPress && ((PlayState.formoverride != "bf") ? CharactersWith3D.contains(PlayState.formoverride) : CharactersWith3D.contains(PlayState.SONG.player1))) is3d = true;
 		super.update(elapsed);
-		if (noteStyle == "phone" && !isSustainNote) animation.play("phone");
-		if (noteStyle == "corn" && !isSustainNote) animation.play("corn");
 		
-		if (MyStrum != null && !isAlt)
+		if (!isSustainNote && (noteStyle != "phone" || noteStyle != "corn"))
 		{
-			if (noteData != 1) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
-			if (noteData == 1) x = MyStrum.x + (isSustainNote ? width : 0); // offset for up and down arrow so it doesn't bug me
+		    if (!is3d) 
+		    { 
+		        animation.play(frameN[noteData] + 'Scroll');
+		    }
+		    else 
+		    { 
+		        animation.play(frameN[noteData] + 'Scroll3d');
+		    }
+		}
+
+		
+		if (noteStyle == "phone" && !isSustainNote && !is3d || noteType == 1 && !isSustainNote && !is3d) animation.play("phone");
+		if (noteStyle == "corn" && !isSustainNote && !is3d || noteType == 2 && !isSustainNote && !is3d) animation.play("corn"); 
+
+		if (noteStyle == "phone" && !isSustainNote && is3d || noteType == 1 && !isSustainNote && is3d) animation.play("phone3d");
+		if (noteStyle == "corn" && !isSustainNote && is3d || noteType == 2 && !isSustainNote && is3d) animation.play("corn3d"); //note type my beloved
+		
+		if (mustPress && MyStrum != null)
+		{
+		    switch (mania)//I have finally added this for 6k and 9k
+			{
+			case 1:
+			    if (noteData != 4) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
+			    if (noteData == 4) x = MyStrum.x + (isSustainNote ? width : 0); // 6k
+			case 2:
+			    if (noteData != 1) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
+			    if (noteData == 1 || noteData == 6) x = MyStrum.x + (isSustainNote ? width : 0); // 9k
+			default:
+			    if (noteData != 1) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
+			    if (noteData == 1) x = MyStrum.x + (isSustainNote ? width : 0); // offset for up and down arrow so it doesn't bug me
+			}
 		}
 		else
 		{
@@ -422,6 +474,21 @@ class Note extends FlxSprite
 							{
 								x = spr.x;
 								MyStrum = spr;
+								if (isSustainNote)
+								{
+								switch (mania)//I have finally added this for 6k and 9k
+			{
+			case 1:
+			    if (noteData != 4) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
+			    if (noteData == 4) x = MyStrum.x + (isSustainNote ? width : 0); // 6k
+			case 2:
+			    if (noteData != 1) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
+			    if (noteData == 1 || noteData == 6) x = MyStrum.x + (isSustainNote ? width : 0); // 9k
+			default:
+			    if (noteData != 1) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
+			    if (noteData == 1) x = MyStrum.x + (isSustainNote ? width : 0); // offset for up and down arrow so it doesn't bug me
+				}
+			}
 							}
 						});
 					}
@@ -433,6 +500,21 @@ class Note extends FlxSprite
 								{
 									x = spr.x;
 									MyStrum = spr;
+									if (isSustainNote)
+								{
+								switch (mania)//I have finally added this for 6k and 9k
+			{
+			case 1:
+			    if (noteData != 4) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
+			    if (noteData == 4) x = MyStrum.x + (isSustainNote ? width : 0); // 6k
+			case 2:
+			    if (noteData != 1) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
+			    if (noteData == 1 || noteData == 6) x = MyStrum.x + (isSustainNote ? width : 0); // 9k
+			default:
+			    if (noteData != 1) x = MyStrum.x + (isSustainNote ? width + 4 : 0);
+			    if (noteData == 1) x = MyStrum.x + (isSustainNote ? width : 0); // offset for up and down arrow so it doesn't bug me
+				}
+			}
 								}
 							});
 					}
@@ -451,7 +533,7 @@ class Note extends FlxSprite
 			}
 		}
 		
-		if (mustPress)
+		if (mustPress && !PlayState.botplay)
 		{
 			// The * 0.5 is so that it's easier to hit them too late, instead of too early
 			if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
@@ -460,21 +542,24 @@ class Note extends FlxSprite
 			else
 				canBeHit = false;
 
-			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit && isAlive)
+			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
 				tooLate = true;
-			if (strumTime <= Conductor.songPosition && PlayState.botplay && noteType != 1)//lol bot go brr
-				{
-				coolBot = true;
-				}
+			
 		}
-		else
+		else if (!mustPress)
 		{
 			canBeHit = false;
 
 			if (strumTime <= Conductor.songPosition)
 				wasGoodHit = true;
 		}
-
+		else
+		{
+		if (strumTime <= Conductor.songPosition && noteType != 1)//lol bot go brr
+				{
+				coolBot = true;
+				}
+		}
 		if (tooLate)
 		{
 			if (alpha > 0.3)

@@ -405,9 +405,11 @@ class StoryMenuState extends MusicBeatState
 				{
 					default:
 						LoadingState.loadAndSwitchState(new PlayState(), true);
+						ChartingState.usedCharter = false;
 					case 1:
 						FlxG.sound.music.stop();
 						LoadingState.loadAndSwitchState(new VideoState('assets/videos/daveCutscene.webm', new PlayState()), true);
+						ChartingState.usedCharter = false;
 				}
 				
 			});
@@ -522,7 +524,7 @@ class StoryMenuState extends MusicBeatState
 
 		FlxTween.color(yellowBG, 0.25, yellowBG.color, songColors[curWeek]);
 
-		FlxG.sound.play(Paths.sound('scrollMenu'));
+		//FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		updateText();
 		imageBgCheck();

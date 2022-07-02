@@ -600,6 +600,20 @@ class Character extends FlxSprite
 				antialiasing = false;
 		
 				playAnim('idle');
+			case 'hell remaster':
+				// BAMBI SHITE ANIMATION LOADING CODE
+				tex = Paths.getSparrowAtlas('hypertone/hell remaster');
+				frames = tex;
+				animation.addByPrefix('idle', 'you fucked up', 60, false);
+		
+				addOffset('idle');
+				globaloffset[0] = 150;
+				globaloffset[1] = 450; //this is the y
+				setGraphicSize(Std.int(width / furiosityScale));
+				updateHitbox();
+				antialiasing = false;
+		
+				playAnim('idle');
 			case 'bambi-helium':
 				// BAMBI SHITE ANIMATION LOADING CODE
 				tex = Paths.getSparrowAtlas('dave/helium man');
@@ -768,21 +782,43 @@ class Character extends FlxSprite
 				antialiasing = false;
 		
 				playAnim('idle');
-			case 'bambi-phono':
+			case 'evacuate this premises':
 				// BAMBI SHITE ANIMATION LOADING CODE
-				tex = Paths.getSparrowAtlas('dave/bambi_phono');
-				frames = tex;
-				animation.addByPrefix('idle', 'DaveAngry idle dance', 24, false);
-				animation.addByPrefix('singUP', 'DaveAngry Sing Note UP', 24, false);
-				animation.addByPrefix('singRIGHT', 'DaveAngry Sing Note RIGHT', 24, false);
-				animation.addByPrefix('singDOWN', 'DaveAngry Sing Note DOWN', 24, false);
-				animation.addByPrefix('singLEFT', 'DaveAngry Sing Note LEFT', 24, false);
+				frames = Paths.getSparrowAtlas('bambi/leave_this_place');
+
+				animation.addByPrefix('idle', 'leave this place idle', 24, false);
+				animation.addByPrefix('singUP', 'leave this place up', 24, false);
+				animation.addByPrefix('singRIGHT', 'leave this place right', 24, false);
+				animation.addByPrefix('singDOWN', 'leave this place down', 24, false);
+				animation.addByPrefix('singLEFT', 'leave this place left', 24, false);
 		
 				addOffset('idle');
-				addOffset("singUP", 20, -10);
-				addOffset("singRIGHT", 80, -20);
-				addOffset("singLEFT", 0, -10);
-				addOffset("singDOWN", 0, 10);
+				addOffset("singUP", 0, 45);
+				addOffset("singRIGHT", -130, 0);
+				addOffset("singLEFT", 100, 0);
+				addOffset("singDOWN", 0, -150);
+				globaloffset[0] = 150 * 1.3;
+				globaloffset[1] = 450 * 1.3; //this is the y
+				setGraphicSize(Std.int(width / furiosityScale));
+				updateHitbox();
+				antialiasing = false;
+		
+				playAnim('idle');
+			case 'bambi-phono':
+				// BAMBI SHITE ANIMATION LOADING CODE
+				tex = Paths.getSparrowAtlas('hypertone/phonophobia man');
+				frames = tex;
+				animation.addByPrefix('idle', 'phonophobia idle', 24, false);
+				animation.addByPrefix('singUP', 'phonophobia up', 24, false);
+				animation.addByPrefix('singRIGHT', 'phonophobia right', 24, false);
+				animation.addByPrefix('singDOWN', 'phonophobia down', 24, false);
+				animation.addByPrefix('singLEFT', 'phonophobia left', 24, false);
+		
+				addOffset('idle');
+				addOffset("singUP", 0, -50);
+				addOffset("singRIGHT", -55, 0);
+				addOffset("singLEFT", 55, -5);
+				addOffset("singDOWN", 0, 50);
 				globaloffset[0] = 150;
 				globaloffset[1] = 450; //this is the y
 				setGraphicSize(Std.int(width / furiosityScale));
@@ -794,20 +830,31 @@ class Character extends FlxSprite
 				// BAMBI SHITE ANIMATION LOADING CODE
 				tex = Paths.getSparrowAtlas('bambi/GREEN');
 				frames = tex;
-				animation.addByPrefix('idle', 'idle', 15, false);
-				animation.addByPrefix('singUP', 'singUP', 24, false);
-				animation.addByPrefix('singRIGHT', 'singRIGHT', 24, false);
-				animation.addByPrefix('singDOWN', 'singDOWN', 24, false);
-				animation.addByPrefix('singLEFT', 'singLEFT', 24, false);
+				animation.addByPrefix('idle', 'OppoExpungedIdle', 24, false);
+				animation.addByPrefix('singUP', 'OppoExpungedUp', 24, false);
+				animation.addByPrefix('singRIGHT', 'OppoExpungedRight', 24, false);
+				animation.addByPrefix('singDOWN', 'OppoExpungedDown', 24, false);
+				animation.addByPrefix('singLEFT', 'OppoExpungedLeft', 24, false);
 		
-				addOffset('idle');
-				addOffset("singUP", 49, 0);
-				addOffset("singRIGHT", 31, -62);
-				addOffset("singLEFT", 101, -53);
-				addOffset("singDOWN", 47, -15);
-				globaloffset[0] = 150 * 1.3;
-				globaloffset[1] = 450 * 1.3; //this is the y
-				setGraphicSize(Std.int((width * 1.3) / furiosityScale));
+				addOffset('idle', 40, 140);
+				addOffset("singUP", -259, -105);
+				addOffset("singRIGHT", -183, -135);
+				addOffset("singLEFT", -291, 75);
+				addOffset("singDOWN", -300, -198);
+				globaloffset[0] = -183;
+				globaloffset[1] = -135; //this is the y
+				updateHitbox();
+				antialiasing = false;
+		
+				playAnim('idle');
+			case 'septuagint':
+				// BAMBI SHITE ANIMATION LOADING CODE
+				frames = Paths.getSparrowAtlas('bambi/septuagintexpunged');
+				animation.addByPrefix('idle', 'septuagint expunged', 24, false);
+		
+				addOffset('idle', 40, 140);
+				globaloffset[0] = -183;
+				globaloffset[1] = -135; //this is the y
 				updateHitbox();
 				antialiasing = false;
 		
@@ -1245,6 +1292,21 @@ class Character extends FlxSprite
 				addOffset('singRIGHT');
 
 				playAnim('idle');
+			case 'bamber-angy':
+				frames = Paths.getSparrowAtlas('bambi/bambimaddddd');
+				animation.addByPrefix('idle', 'idle', 24, true);
+				animation.addByPrefix('singLEFT', 'left', 24, false);
+				animation.addByPrefix('singDOWN', 'down', 24, false);
+				animation.addByPrefix('singUP', 'up', 24, false);
+				animation.addByPrefix('singRIGHT', 'right', 24, false);
+
+				addOffset('idle');
+				addOffset('singLEFT');
+				addOffset('singDOWN');
+				addOffset('singUP', 0, 20);
+				addOffset('singRIGHT');
+
+				playAnim('idle');
 			case 'bambi-bevel':
 				var tex = Paths.getSparrowAtlas('bambi/bevel_bambi');
 				frames = tex;
@@ -1319,6 +1381,65 @@ class Character extends FlxSprite
 				nativelyPlayable = true;
 
 				flipX = true;
+			case 'cryo dave':
+				// secret dave man
+				frames = Paths.getSparrowAtlas('dave/cryophobia man/cryo dave');
+				animation.addByPrefix('idle', 'dave', 24, false);
+		
+				//addOffset('idle', 40, 140);
+				globaloffset[0] = -183;
+				globaloffset[1] = -135; //this is the y
+				updateHitbox();
+				antialiasing = false;
+		
+				playAnim('idle');
+			case 'terminatizing':
+				// thethethethe
+				frames = Paths.getSparrowAtlas('hypertone/terminator bruh');
+				animation.addByPrefix('idle', 'expunge me already', 24, false);
+		
+				//addOffset('idle', 40, 140);
+				globaloffset[0] = -183;
+				globaloffset[1] = -135; //this is the y
+				updateHitbox();
+				antialiasing = false;
+		
+				playAnim('idle');
+			case 'breaker of universes':
+				// thethethethe
+				frames = Paths.getSparrowAtlas('hypertone/universe breaker');
+				animation.addByPrefix('idle', 'idle', 24, false);
+		
+				//addOffset('idle', 40, 140);
+				globaloffset[0] = -183;
+				globaloffset[1] = -135; //this is the y
+				updateHitbox();
+				antialiasing = false;
+		
+				playAnim('idle');
+			case 'conbi':
+				// thethethethe
+				frames = Paths.getSparrowAtlas('hypertone/conbi');
+				animation.addByPrefix('idle', 'idle', 24, false);
+				animation.addByPrefix('singUP', 'idle', 24, false);
+				animation.addByPrefix('singRIGHT', 'idle', 24, false);
+				animation.addByPrefix('singDOWN', 'idle', 24, false);
+				animation.addByPrefix('singLEFT', 'idle', 24, false);
+		
+				//addOffset('idle', 40, 140);
+				globaloffset[0] = -183;
+				globaloffset[1] = -135; //this is the y
+				updateHitbox();
+				antialiasing = false;
+		
+				playAnim('idle');
+
+			case 'phone':
+				frames = Paths.getSparrowAtlas('bambi/phone1');
+				animation.addByPrefix('idle', 'phone!!1 daphone', 24, false);
+		
+				playAnim('idle');
+
 			default:
 			    //prevents crashes on unknown characters
 				tex = Paths.getSparrowAtlas('dave/dave_sheet');
@@ -1422,7 +1543,7 @@ class Character extends FlxSprite
 		{
 			return; //why wasn't this a thing in the first place
 		}
-		if(AnimName.toLowerCase() == 'idle' && !canDance)
+		if(AnimName.toLowerCase() == 'idle' && (!canDance && !Force))
 		{
 			return;
 		}

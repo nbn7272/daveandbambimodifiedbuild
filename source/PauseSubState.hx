@@ -107,11 +107,14 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					close();
 				case "Restart Song":
-					FlxG.resetState();
+					//FlxG.resetState();
+					var poop:String = Highscore.formatSong(PlayState.SONG.song.toLowerCase(), PlayState.storyDifficulty);
+					PlayState.SONG = Song.loadFromJson(poop, PlayState.SONG.song.toLowerCase());
+					FlxG.switchState(new PlayState());
 				case "Botplay":
 				    PlayState.botplay = !PlayState.botplay;
-					PlayState.totalBot = !PlayState.totalBot;
-					FlxG.resetState();//prevents annoying shit
+					//PlayState.totalBot = !PlayState.totalBot;
+					//FlxG.resetState();//prevents annoying shit
 				case "Exit to menu":
 					PlayState.characteroverride = 'none';
 					PlayState.formoverride = 'none';

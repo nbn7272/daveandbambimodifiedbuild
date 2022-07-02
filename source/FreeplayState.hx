@@ -5,6 +5,7 @@ import flixel.tweens.FlxEase;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
@@ -13,8 +14,13 @@ import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxStringUtil;
 import lime.utils.Assets;
+import flash.system.System;
 #if desktop
 import Discord.DiscordClient;
+#end
+#if windows
+import sys.io.File;
+import sys.io.Process;
 #end
 using StringTools;
 
@@ -26,12 +32,18 @@ class FreeplayState extends MusicBeatState
 	var curSelected:Int = 0;
 	var curDifficulty:Int = 1;
 
+	var text:FlxText;
+	var augh:Bool = false;
+
 	var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('backgrounds/SUSSUS AMOGUS'));
+	var magenta:FlxSprite;
 
 	var scoreText:FlxText;
 	var diffText:FlxText;
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
+
+	var texts:Array<FlxText> = new Array<FlxText>();
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
@@ -43,12 +55,15 @@ class FreeplayState extends MusicBeatState
 
 	private var AllPossibleSongs:Array<String> = ["Dave", "Joke", "Extra", 'Base', 'Extended'];
 
-	var moreDifficultySongs:Array<String> = ["House", "Insanity", "Polygonized", "Bonus-Song", "Furiosity", "Very-Screwed"]; //SEXERT
-	var singleDifficultySongs:Array<String> = ["Splitathon", "Phonophobia", "Thearchy", "Scopomania"];
+	var moreDifficultySongs:Array<String> = ["House", "Insanity", "Polygonized", "Bonus-Song", "Furiosity", "Very-Screwed", "Unfairness"]; //SEXERT
+	var singleDifficultySongs:Array<String> = ["Splitathon", "Phonophobia", "Thearchy", "Scopomania", "Torture", "Terminatizing", "Delirium", "Hellbreaker two", "Reality-Breaking", "Leave-This-Place", "Warped-Reality"];
+	var twoDifficultySongs:Array<String> = ["Green", "Septuagint", "Universe-breaker"];
 
 	var deezonediff:Array<String> = ['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia', 'Torture'];
 
 	private var CurrentPack:Int = 0;
+
+	var canMove:Bool = true;
 
 	private var NameAlpha:Alphabet;
 
@@ -69,6 +84,11 @@ class FreeplayState extends MusicBeatState
 		DiscordClient.changePresence("In the Freeplay Menu", null);
 		#end
 		
+		if (FlxG.save.data.hellbreakerdone)
+		{
+		AllPossibleSongs = ["Dave", "Joke", "Extra", 'Base', 'Extended', 'hellbreaker'];
+		}
+
 		var isDebug:Bool = false;
 
 		#if debug
@@ -78,6 +98,15 @@ class FreeplayState extends MusicBeatState
 		bg.loadGraphic(MainMenuState.randomizeBG());
 		bg.color = 0xFF4965FF;
 		add(bg);
+
+		magenta = new FlxSprite().loadGraphic(bg.graphic);
+		magenta.scrollFactor.set();
+		//magenta.setGraphicSize(Std.int(magenta.width * 1.1));
+		magenta.updateHitbox();
+		magenta.visible = false;
+		magenta.antialiasing = true;
+		magenta.color = 0xFFfd719b;
+		add(magenta);
 
 		CurrentSongIcon = new FlxSprite(0,0).loadGraphic(Paths.image('week_icons_' + (AllPossibleSongs[CurrentPack].toLowerCase())));
 
@@ -115,15 +144,20 @@ class FreeplayState extends MusicBeatState
 				if(FlxG.save.data.unfairnessFound)
 					addWeek(['Unfairness'], 2, ['bambi-unfair']);
 				addWeek(['Unfairness-high-pitched'], 2, ['unfair-helium']);
-				addWeek(['Hellbreaker'], 2, ['hell']);
+				//addWeek(['Hellbreaker'], 2, ['hell']);
 			case 'extra':
 				addWeek(['Mealie'], 2, ['bambi-loser']);
 				addWeek(['Furiosity', 'Old-Insanity'], 1, ['dave-angey', 'dave-old']);
 				addWeek(['Old-Corn-Theft', 'Old-Maze'], 2, ['bambi-farmer-beta', 'bambi-farmer-beta']);
-				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia'], 2, ['face']);
+				//addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia'], 2, ['face']);
 			case 'extended':
 				addWeek(['Disruption', 'Applecore', 'Very-Screwed'], 2, ['bambi-piss-3d', 'bandu', 'bambi-angey']);
-				addWeek(['Opposition', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Phonophobia', 'Green', 'Torture', 'Septuagint'], 69/*haha so funny*/, ['GREEN','face','GREEN','face','face','GREEN','bambi-unfair', 'bambi-remake']);
+				addWeek(['Septuagint', 'Delirium', 'Reality-Breaking'], 2, ['septuagint', 'conbi', 'bambi-angey']);
+				addWeek(['Torture', 'Leave-This-Place', 'Warped-Reality', 'Opposition', 'Phonophobia', 'Hellbreaker', 'Thearchy', 'Scopomania', 'Green', 'Terminatizing'], 69, ['bambi-unfair','evacuate this premises','bambi-phono','GREEN','bambi-phono','hell','GREEN','scopomania','GREEN','terminatizing']);
+		// rearanged this shit and added proper icons
+		     case 'hellbreaker':
+				addWeek(['Hellbreaker', 'Hellbreaker two'], 69, ['hell', 'hell remaster']);
+				if (FlxG.save.data.universebreakerREAL) addWeek(['Universe-breaker'], 69, ['breaker of universes']);
 		}
 	}
 
@@ -186,7 +220,26 @@ class FreeplayState extends MusicBeatState
 		NameAlpha = new Alphabet(40,(FlxG.height / 2) - 282,AllPossibleSongs[CurrentPack],true,false);
 		NameAlpha.x = (FlxG.width / 2) - 164;
 		add(NameAlpha);
+		if (AllPossibleSongs[CurrentPack].toLowerCase() == "hellbreaker") NameAlpha.x -= 275;
 		CurrentSongIcon.loadGraphic(Paths.image('week_icons_' + (AllPossibleSongs[CurrentPack].toLowerCase())));
+
+		if (FlxG.save.data.firstfoundhell && FlxG.save.data.hellbreakerdone && AllPossibleSongs[CurrentPack].toLowerCase() == "hellbreaker")
+		{
+		FlxG.camera.shake(0.0075, 0.6);
+		CurrentSongIcon.alpha = 0;
+		NameAlpha.alpha = 0;
+		canMove = false;//:flushed:
+
+		FlxTween.tween(CurrentSongIcon, {alpha: 1}, 0.6, {type: ONESHOT,
+			            onComplete: function(tween:FlxTween) {
+						FlxG.camera.flash(FlxColor.WHITE, 1);
+						canMove = true;//prevents changing and making cutscene go weird
+				        }
+			            });
+
+		FlxTween.tween(NameAlpha, {alpha: 1}, 0.6, {type: ONESHOT});
+		FlxG.save.data.firstfoundhell = false;// a neat little cutscene :)
+		}
 	}
 
 	override function beatHit()
@@ -214,14 +267,52 @@ class FreeplayState extends MusicBeatState
 	{
 		super.update(elapsed);
 
+		if (augh)
+		{
+		 if (FlxG.keys.justPressed.Y)
+		 {
+		  FlxG.sound.play(Paths.sound('confirmMenu'));
+			FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+
+			for (icon in iconArray)
+		   {
+		    if (icon != iconArray[curSelected]) 
+			    FlxTween.tween(icon, {alpha: 0}, 1.1, {type: ONESHOT,
+			            onComplete: function(tween:FlxTween) {
+						var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
+
+			            trace(poop);
+
+			            PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+			            PlayState.isStoryMode = false;
+			            PlayState.storyDifficulty = curDifficulty;
+						PlayState.replaying = true;
+
+			            ChartingState.usedCharter = false;
+
+			            PlayState.storyWeek = songs[curSelected].week;
+			            LoadingState.loadAndSwitchState(new CharacterSelectState());
+				        }
+			            });
+			}
+		 }
+		 else if (FlxG.keys.justPressed.N)
+		 {
+		 remove(text);
+		 for (text in texts)
+				{
+				remove(text);
+				}
+		 }
+		}
 
 		if (!InMainFreeplayState) 
 		{
-			if (controls.LEFT_P)
+			if (controls.LEFT_P && canMove)
 			{
 				UpdatePackSelection(-1);
 			}
-			if (controls.RIGHT_P)
+			if (controls.RIGHT_P && canMove)
 			{
 				UpdatePackSelection(1);
 			}
@@ -284,30 +375,90 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted)
 		{
-			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
+		    FlxG.sound.play(Paths.sound('confirmMenu'));
+			FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+		if (FlxG.keys.pressed.CONTROL)
+		{
+			for (icon in iconArray)
+		   {
+		    if (icon != iconArray[curSelected]) 
+			    FlxTween.tween(icon, {alpha: 0}, 1.1, {type: ONESHOT,
+			            onComplete: function(tween:FlxTween) {
+						
+				        }
+			            });
+			}
+			 FlxTween.tween(iconArray[curSelected], {alpha: 1}, 1.1, {type: ONESHOT,
+			            onComplete: function(tween:FlxTween) {
+						var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
 
-			trace(poop);
+			            trace(poop);
 
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
-			PlayState.isStoryMode = false;
-			PlayState.storyDifficulty = curDifficulty;
+			            PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+			            PlayState.isStoryMode = false;
+			            PlayState.storyDifficulty = curDifficulty;
 
-			PlayState.storyWeek = songs[curSelected].week;
-			LoadingState.loadAndSwitchState(new CharacterSelectState());
+			            ChartingState.usedCharter = false;
+
+			            PlayState.storyWeek = songs[curSelected].week;
+			            PlayState.characteroverride = "bf";
+		                PlayState.formoverride = "bf";
+		                PlayState.curmult = [1,1,1,1];
+		                LoadingState.loadAndSwitchState(new PlayState());
+				        }
+			            });
 		}
+		else
+			{
+			for (icon in iconArray)
+		   {
+		    if (icon != iconArray[curSelected]) 
+			    FlxTween.tween(icon, {alpha: 0}, 1.1, {type: ONESHOT,
+			            onComplete: function(tween:FlxTween) {
+						
+				        }
+			            });
+			}
+			 FlxTween.tween(iconArray[curSelected], {alpha: 1}, 1.1, {type: ONESHOT,
+			            onComplete: function(tween:FlxTween) {
+						var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
+
+			            trace(poop);
+
+			            PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+			            PlayState.isStoryMode = false;
+			            PlayState.storyDifficulty = curDifficulty;
+
+			            ChartingState.usedCharter = false;
+
+			            PlayState.storyWeek = songs[curSelected].week;
+			           
+		                LoadingState.loadAndSwitchState(new CharacterSelectState());
+				        }
+			            });
+			}
+		}
+		
 	}
 
 	function changeDiff(change:Int = 0)
 	{
 		curDifficulty += change;
-		if (!moreDifficultySongs.contains(songs[curSelected].songName))// add your song name to the string titled "moreDifficultySongs" and the engine will add unnerfed difficulty for you!
+		if (!moreDifficultySongs.contains(songs[curSelected].songName) && !twoDifficultySongs.contains(songs[curSelected].songName))// add your song name to the string titled "moreDifficultySongs" and the engine will add unnerfed difficulty for you!
 		{
 		if (curDifficulty < 0)
 			curDifficulty = 2;
 		if (curDifficulty > 2)
 			curDifficulty = 0;
 		}
-		else
+		else if(twoDifficultySongs.contains(songs[curSelected].songName))// same here
+		{
+		if (curDifficulty < 1)
+			curDifficulty = 2;
+		if (curDifficulty > 2)
+			curDifficulty = 1;
+		}
+		else// me when the
 		{
 			if (curDifficulty < 0)
 				curDifficulty = 3;
@@ -324,6 +475,27 @@ class FreeplayState extends MusicBeatState
 		#end
 		curChar = Highscore.getChar(songs[curSelected].songName, curDifficulty);
 		updateDifficultyText();
+
+
+		if (sys.FileSystem.exists('assets/replays/replay of ' + songs[curSelected].songName + '.txt'))
+		        {
+				text = new FlxText(400, 400, 400, "Replay found for song. Play? Y/N", 32);
+		        text.screenCenter();
+		        text.setFormat(Paths.font("comic.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		        augh = true;
+				remove(text);//prevents them from stacking
+				add(text);
+				texts.push(text);
+				}
+		else
+		        {
+				augh = false;
+				remove(text);
+				for (text in texts)
+				{
+				remove(text);
+				}
+				}
 		
 	}
 
@@ -349,8 +521,16 @@ class FreeplayState extends MusicBeatState
 						diffText.text = 'NORMAL' + " - " + stupidBitch.toUpperCase();
 						diffText.color = FlxColor.WHITE;
 					case 2:
+					    if (songs[curSelected].songName != 'Green')
+						{
 						diffText.text = "HARD" + " - " + stupidBitch.toUpperCase();
 						diffText.color = FlxColor.WHITE;
+						}
+						if (songs[curSelected].songName == 'Green' || songs[curSelected].songName == 'Septuagint')
+						{
+						diffText.text = "INSANE" + " - " + stupidBitch.toUpperCase();
+						diffText.color = 0xFF00FF00;
+						}
 					case 3:
 					    if (songs[curSelected].songName == 'Very-Screwed')
 						{
@@ -361,6 +541,10 @@ class FreeplayState extends MusicBeatState
 						{
 						diffText.text = "INSANE" + " - " + stupidBitch.toUpperCase();
 						diffText.color = 0x00B40404;
+						}
+						else if (songs[curSelected].songName == 'Unfairness')
+						{
+						diffText.text = "B-Side" + " - " + stupidBitch.toUpperCase();
 						}
 						else
 						{
@@ -382,16 +566,9 @@ class FreeplayState extends MusicBeatState
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
-		if (songs[curSelected].week != 1 || songs[curSelected].songName == 'Old-Insanity')
-		{
-			if (curDifficulty < 0)
-				curDifficulty = 2;
+			changeDiff();
 
-			if (curDifficulty > 2)
-				curDifficulty = 0;
-		}
-
-		if (songs[curSelected].week == 3)
+		if (singleDifficultySongs.contains(songs[curSelected].songName))
 		{
 			curDifficulty = 1;
 		}
@@ -409,9 +586,16 @@ class FreeplayState extends MusicBeatState
 
 		var bullShit:Int = 0;
 
-		for (i in 0...iconArray.length)
+		for (icon in 0...iconArray.length)
 		{
-			iconArray[i].alpha = 0.6;
+			iconArray[icon].alpha = 0.6;
+			switch (iconArray[icon].animation.name)
+		    {
+		        case "GREEN":
+			        iconArray[icon].scale.set(1.2, 1.2);
+		        default:
+			        iconArray[icon].scale.set(1, 1);		
+		    }
 		}
 
 		iconArray[curSelected].alpha = 1;
@@ -430,13 +614,17 @@ class FreeplayState extends MusicBeatState
 		}
 		switch (songs[curSelected].songName)
 		{
+		    case "Leave-This-Place":
+			     FlxTween.color(bg, 0.5, bg.color, 0xFF46FF81);
+		    case "Terminatizing":
+			     FlxTween.color(bg, 0.75, bg.color, 0xFF3C3C3C);
 		    case "Green":
 			     FlxTween.color(bg, 0.75, bg.color, 0xFF00FF00);
 			case "Scopomania":
 			     FlxTween.color(bg, 0.75, bg.color, 0xFF64302D);
 			case "Thearchy":
 			     FlxTween.color(bg, 0.75, bg.color, 0xFFE6E6E6);
-			case "Hellbreaker":
+			case "Hellbreaker" | "Hellbreaker 2" | "Universe-breaker":
 			     FlxTween.color(bg, 0.625, bg.color, 0xFF3C3C3C);
 			case "Phonophobia":
 			     FlxTween.color(bg, 0.5, bg.color, 0xFFE6E6E6);
@@ -444,6 +632,28 @@ class FreeplayState extends MusicBeatState
 			     FlxTween.color(bg, 0.5, bg.color, 0xFF0000C8);
 		    default:
 		        FlxTween.color(bg, 0.25, bg.color, songColors[songs[curSelected].week]);
+		}
+
+		if (!moreDifficultySongs.contains(songs[curSelected].songName) && !twoDifficultySongs.contains(songs[curSelected].songName))// add your song name to the string titled "moreDifficultySongs" and the engine will add unnerfed difficulty for you!
+		{
+		if (curDifficulty < 0)
+			curDifficulty = 2;
+		if (curDifficulty > 2)
+			curDifficulty = 0;
+		}
+		else if (twoDifficultySongs.contains(songs[curSelected].songName))// same here
+		{
+		if (curDifficulty < 1)
+			curDifficulty = 2;
+		if (curDifficulty > 2)
+			curDifficulty = 1;
+		}
+		else if (!singleDifficultySongs.contains(songs[curSelected].songName)) // me when the
+		{
+			if (curDifficulty < 0)
+				curDifficulty = 3;
+			if (curDifficulty > 3)
+				curDifficulty = 0;
 		}
 	}
 }

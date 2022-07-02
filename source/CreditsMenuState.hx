@@ -54,6 +54,16 @@ class CreditsMenuState extends MusicBeatState
    var hasSocialMedia:Bool = true;
    var peopleInCredits:Array<Person> = 
    [
+       new Person("Jamsybob", CreditsType.boop, "Most of the code",
+        [
+           new Social('youtube', 'https://www.youtube.com/channel/UCb9QfDV3mZtWcsjUS_m-OJA')
+         ]
+      ),
+      new Person("Minus club", CreditsType.boop, "The rest of the code",
+        [
+           new Social('youtube', 'https://www.youtube.com/channel/UCu-Q4eV9w5pKpKYzcCkZPzw')
+         ]
+      ),
       //devs
       new Person("Grantare", CreditsType.Dev, "Disruption and Applecore Composer",
         [
@@ -224,6 +234,7 @@ class CreditsMenuState extends MusicBeatState
       bg.scrollFactor.set();
 		add(bg);
       
+      var modmakers:Array<Person> = new Array<Person>();
       var developers:Array<Person> = new Array<Person>();
       var betaTesters:Array<Person> = new Array<Person>();
       var contributors:Array<Person> = new Array<Person>();
@@ -232,6 +243,7 @@ class CreditsMenuState extends MusicBeatState
       {
          switch (person.creditsType)
          {
+            case boop: modmakers.push(person);
             case Dev: developers.push(person);
             case BetaTester: betaTesters.push(person);
             case Contributor: contributors.push(person);
@@ -241,11 +253,13 @@ class CreditsMenuState extends MusicBeatState
       for (i in 0...peopleInCredits.length)
       {
          var currentPerson = peopleInCredits[i];
-         if (currentPerson == developers[0] || currentPerson == contributors[0] || currentPerson == betaTesters[0])
+         if (currentPerson == developers[0] || currentPerson == contributors[0] || currentPerson == betaTesters[0] || currentPerson == modmakers[0])
          {
             var textString:String = '';
             switch (currentPerson.creditsType)
             {
+               case boop:
+                   textString = 'Modmakers';
                case Dev:
                   textString = 'Developers';
                case Contributor:
@@ -646,7 +660,7 @@ class SocialButton
 }
 enum CreditsType
 {
-   Dev; BetaTester; Contributor;
+   boop; Dev; BetaTester; Contributor;
 }
 enum State
 {

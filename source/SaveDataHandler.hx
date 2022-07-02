@@ -26,21 +26,25 @@ class SaveDataHandler
 		if (FlxG.save.data.accuracyDisplay == null)
 			FlxG.save.data.accuracyDisplay = true;
 
+		if (FlxG.save.data.modchart == null)
+			FlxG.save.data.modchart = true;
+
 		if (FlxG.save.data.eyesores == null)
 			FlxG.save.data.eyesores = true;
 
 		if (FlxG.save.data.donoteclick == null)
 			FlxG.save.data.donoteclick = false;
 
-		if (FlxG.save.data.modchart == null)
-			FlxG.save.data.modchart = true;
+		if (FlxG.save.data.hellbreakerdone == null)
+			FlxG.save.data.hellbreakerdone = false;
+
+		if (FlxG.save.data.firstfoundhell == null)
+			FlxG.save.data.firstfoundhell = true;
 
 		if (FlxG.save.data.newInput != null && FlxG.save.data.lastversion == null)
 			FlxG.save.data.lastversion = "pre-beta2";
 		
 		if (FlxG.save.data.newInput == null && FlxG.save.data.lastversion == null)
 			FlxG.save.data.lastversion = "beta2";
-		if (FlxG.save.data.immortal == null)
-			FlxG.save.data.immortal = false;
     }
 }
