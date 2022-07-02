@@ -804,6 +804,28 @@ class Character extends FlxSprite
 				antialiasing = false;
 		
 				playAnim('idle');
+			case 'real break':
+				// BAMBI SHITE ANIMATION LOADING CODE
+				frames = Paths.getSparrowAtlas('bambi/reality breaker');
+
+				animation.addByPrefix('idle', 'reality breaker idle', 24, false);
+				animation.addByPrefix('singUP', 'reality breaker up', 24, false);
+				animation.addByPrefix('singRIGHT', 'reality breaker right', 24, false);
+				animation.addByPrefix('singDOWN', 'reality breaker down', 24, false);
+				animation.addByPrefix('singLEFT', 'reality breaker left', 24, false);
+		
+				addOffset('idle');
+				addOffset("singUP", 0, -105);
+				addOffset("singRIGHT", -160, -150);
+				addOffset("singLEFT", 100, -150);
+				addOffset("singDOWN", 0, -300);
+				globaloffset[0] = 150 * 1.3;
+				globaloffset[1] = 450 * 1.3; //this is the y
+				setGraphicSize(Std.int(width / furiosityScale));
+				updateHitbox();
+				antialiasing = false;
+		
+				playAnim('idle');
 			case 'bambi-phono':
 				// BAMBI SHITE ANIMATION LOADING CODE
 				tex = Paths.getSparrowAtlas('hypertone/phonophobia man');
