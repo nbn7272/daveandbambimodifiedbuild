@@ -355,17 +355,17 @@ class FreeplayState extends MusicBeatState
 		var downP = controls.DOWN_P;
 		var accepted = controls.ACCEPT;
 
-		if (upP)
+		if (upP && canMove)
 		{
 			changeSelection(-1);
 		}
-		if (downP)
+		if (downP && canMove)
 		{
 			changeSelection(1);
 		}
-		if (controls.LEFT_P)
+		if (controls.LEFT_P && canMove)
 			changeDiff(-1);
-		if (controls.RIGHT_P)
+		if (controls.RIGHT_P && canMove)
 			changeDiff(1);
 
 		if (controls.BACK)
@@ -377,6 +377,7 @@ class FreeplayState extends MusicBeatState
 		{
 		    FlxG.sound.play(Paths.sound('confirmMenu'));
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+			canMove = false; //fixed this minusclub
 		if (FlxG.keys.pressed.CONTROL)
 		{
 			for (icon in iconArray)
