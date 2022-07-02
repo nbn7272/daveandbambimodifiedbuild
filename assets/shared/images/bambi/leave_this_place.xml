@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="leave this place.png"><SubTexture name="leave this place idle0000" x="1488" y="0" width="493" height="494" frameX="-118" frameY="-139" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place idle0001" x="0" y="1099" width="496" height="494" frameX="-115" frameY="-139" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place idle0002" x="496" y="1099" width="497" height="494" frameX="-115" frameY="-139" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place idle0003" x="993" y="1099" width="500" height="494" frameX="-113" frameY="-139" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place idle0004" x="993" y="1099" width="500" height="494" frameX="-113" frameY="-139" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place right0000" x="1204" y="1593" width="615" height="472" frameX="-102" frameY="-144" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place right0001" x="1819" y="1593" width="617" height="472" frameX="-103" frameY="-144" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place right0002" x="2503" y="0" width="602" height="472" frameX="-119" frameY="-144" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place right0003" x="0" y="2071" width="607" height="472" frameX="-119" frameY="-144" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place left0000" x="2503" y="1412" width="466" height="467" frameX="-95" frameY="-145" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place left0001" x="2503" y="943" width="466" height="469" frameX="-95" frameY="-143" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place left0002" x="1488" y="494" width="464" height="479" frameX="-97" frameY="-133" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place left0003" x="1981" y="956" width="465" height="467" frameX="-96" frameY="-145" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place left0004" x="2503" y="472" width="489" height="471" frameX="-72" frameY="-141" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place up0000" x="0" y="0" width="494" height="560" frameX="-142" frameY="-75" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place up0001" x="987" y="0" width="501" height="547" frameX="-141" frameY="-75" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place up0002" x="494" y="0" width="493" height="549" frameX="-140" frameY="-75" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place up0003" x="509" y="560" width="510" height="513" frameX="-133" frameY="-75" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place up0004" x="0" y="560" width="509" height="539" frameX="-132" frameY="-75" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place down0000" x="1493" y="1099" width="487" height="478" frameX="-140" frameY="-100" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place down0001" x="1981" y="0" width="522" height="478" frameX="-149" frameY="-100" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place down0002" x="1981" y="478" width="511" height="478" frameX="-146" frameY="-100" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place down0003" x="0" y="1593" width="599" height="478" frameX="-98" frameY="-100" frameWidth="1280" frameHeight="720" />
+<SubTexture name="leave this place down0004" x="599" y="1593" width="605" height="478" frameX="-105" frameY="-100" frameWidth="1280" frameHeight="720" />
+</TextureAtlas>

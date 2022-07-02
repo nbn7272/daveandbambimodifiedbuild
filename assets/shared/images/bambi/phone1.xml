@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="phone!!1.png">
+<SubTexture name="phone!!1 daphone0000" x="225" y="1068" width="245" height="530" frameX="-378" frameY="-235" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0001" x="294" y="534" width="226" height="532" frameX="-387" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0002" x="520" y="534" width="203" height="532" frameX="-398" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0003" x="723" y="534" width="178" height="532" frameX="-410" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0004" x="0" y="0" width="148" height="534" frameX="-425" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0005" x="148" y="0" width="114" height="534" frameX="-442" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0006" x="262" y="0" width="77" height="534" frameX="-460" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0007" x="339" y="0" width="42" height="534" frameX="-479" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0008" x="381" y="0" width="76" height="534" frameX="-460" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0009" x="457" y="0" width="112" height="534" frameX="-442" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0010" x="147" y="534" width="147" height="533" frameX="-425" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0011" x="901" y="534" width="176" height="532" frameX="-411" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0012" x="1137" y="0" width="203" height="532" frameX="-398" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0013" x="470" y="1068" width="225" height="530" frameX="-387" frameY="-235" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0014" x="695" y="1068" width="243" height="530" frameX="-378" frameY="-235" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0015" x="1721" y="530" width="255" height="528" frameX="-372" frameY="-236" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0016" x="1976" y="0" width="260" height="528" frameX="-370" frameY="-236" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0017" x="1976" y="528" width="255" height="528" frameX="-373" frameY="-236" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0018" x="938" y="1068" width="244" height="530" frameX="-379" frameY="-235" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0019" x="1182" y="1068" width="227" height="530" frameX="-388" frameY="-235" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0020" x="1137" y="532" width="203" height="532" frameX="-401" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0021" x="1340" y="0" width="179" height="532" frameX="-413" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0022" x="569" y="0" width="148" height="534" frameX="-429" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0023" x="717" y="0" width="114" height="534" frameX="-446" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0024" x="831" y="0" width="77" height="534" frameX="-464" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0025" x="908" y="0" width="42" height="534" frameX="-479" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0026" x="950" y="0" width="74" height="534" frameX="-464" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0027" x="1024" y="0" width="113" height="534" frameX="-444" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0028" x="0" y="534" width="147" height="534" frameX="-427" frameY="-233" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0029" x="1340" y="532" width="177" height="532" frameX="-411" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0030" x="1519" y="0" width="202" height="532" frameX="-398" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0031" x="0" y="1068" width="225" height="532" frameX="-387" frameY="-234" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0032" x="1409" y="1068" width="242" height="530" frameX="-378" frameY="-235" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0033" x="1721" y="0" width="255" height="530" frameX="-372" frameY="-235" frameWidth="1000" frameHeight="1000" />
+<SubTexture name="phone!!1 daphone0034" x="1976" y="1056" width="260" height="528" frameX="-370" frameY="-236" frameWidth="1000" frameHeight="1000" />
+</TextureAtlas>
