@@ -1,6 +1,7 @@
 {
 	"song": {
 		"player1": "bf",
+		"player2": "bambi-angey",
 		"notes": [
 			{
 				"lengthInSteps": 16,
@@ -12994,7 +12995,7 @@
 				"mustHitSection": true
 			}
 		],
-		"player2": "bambi-angey",
+		"events": [],
 		"song": "Very-Screwed",
 		"validScore": true,
 		"needsVoices": true,
