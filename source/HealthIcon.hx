@@ -79,6 +79,7 @@ class HealthIcon extends FlxSprite
 		animation.add('breaker of universes', [69, 69], 0, false, isPlayer);// NICE NUMBER WOOOOOO
 		animation.add('hell remaster', [70, 70], 0, false, isPlayer);
 		animation.add('evacuate this premises', [71, 72], 0, false, isPlayer);
+		animation.add('real break', [73, 74], 0, false, isPlayer);
 
 		animation.add('tristan', [14, 15], 0, false, isPlayer);
 		animation.add('tristan-golden', [22, 23], 0, false, isPlayer);
